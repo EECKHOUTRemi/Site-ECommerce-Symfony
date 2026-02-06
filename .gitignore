@@ -1,8 +1,6 @@
 
 ###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
+/.env*
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
@@ -19,4 +17,4 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-/.env*
+.github/
