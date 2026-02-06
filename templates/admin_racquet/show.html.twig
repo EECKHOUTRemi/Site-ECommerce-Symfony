@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Racquet{% endblock %}
+
+{% block body %}
+    <h1>Racquet</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ racquet.id }}</td>
+            </tr>
+            <tr>
+                <th>Brand</th>
+                <td>{{ racquet.brand }}</td>
+            </tr>
+            <tr>
+                <th>Model</th>
+                <td>{{ racquet.model }}</td>
+            </tr>
+            <tr>
+                <th>Head_size</th>
+                <td>{{ racquet.headSize }}</td>
+            </tr>
+            <tr>
+                <th>String_pattern</th>
+                <td>{{ racquet.stringPattern }}</td>
+            </tr>
+            <tr>
+                <th>Weight</th>
+                <td>{{ racquet.weight }}</td>
+            </tr>
+            <tr>
+                <th>Grip_size</th>
+                <td>{{ racquet.gripSize }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ racquet.price }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ racquet.quantity }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_racquet_index') }}">back to list</a>
+
+    <a href="{{ path('app_admin_racquet_edit', {'id': racquet.id}) }}">edit</a>
+
+    {{ include('admin_racquet/_delete_form.html.twig') }}
+{% endblock %}

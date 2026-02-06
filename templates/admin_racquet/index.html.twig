@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Racquet index{% endblock %}
+
+{% block body %}
+    <h1>Racquet index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Head_size</th>
+                <th>String_pattern</th>
+                <th>Weight</th>
+                <th>Grip_size</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for racquet in racquets %}
+            <tr>
+                <td>{{ racquet.id }}</td>
+                <td>{{ racquet.brand }}</td>
+                <td>{{ racquet.model }}</td>
+                <td>{{ racquet.headSize }}</td>
+                <td>{{ racquet.stringPattern }}</td>
+                <td>{{ racquet.weight }}</td>
+                <td>{{ racquet.gripSize }}</td>
+                <td>{{ racquet.price }}</td>
+                <td>{{ racquet.quantity }}</td>
+                <td>
+                    <a href="{{ path('app_admin_racquet_show', {'id': racquet.id}) }}">show</a>
+                    <a href="{{ path('app_admin_racquet_edit', {'id': racquet.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_racquet_new') }}">Create new</a>
+{% endblock %}

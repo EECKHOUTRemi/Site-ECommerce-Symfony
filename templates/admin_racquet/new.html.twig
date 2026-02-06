@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Racquet{% endblock %}
+
+{% block body %}
+    <h1>Create new Racquet</h1>
+
+    {{ include('admin_racquet/_form.html.twig') }}
+
+    <a href="{{ path('app_admin_racquet_index') }}">back to list</a>
+{% endblock %}
