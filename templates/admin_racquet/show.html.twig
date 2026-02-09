@@ -1,54 +1,78 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Racquet{% endblock %}
+{% block title %}Racquet Details{% endblock %}
 
 {% block body %}
-    <h1>Racquet</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ racquet.id }}</td>
-            </tr>
-            <tr>
-                <th>Brand</th>
-                <td>{{ racquet.brand }}</td>
-            </tr>
-            <tr>
-                <th>Model</th>
-                <td>{{ racquet.model }}</td>
-            </tr>
-            <tr>
-                <th>Head_size</th>
-                <td>{{ racquet.headSize }}</td>
-            </tr>
-            <tr>
-                <th>String_pattern</th>
-                <td>{{ racquet.stringPattern }}</td>
-            </tr>
-            <tr>
-                <th>Weight</th>
-                <td>{{ racquet.weight }}</td>
-            </tr>
-            <tr>
-                <th>Grip_size</th>
-                <td>{{ racquet.gripSize }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ racquet.price }}</td>
-            </tr>
-            <tr>
-                <th>Quantity</th>
-                <td>{{ racquet.quantity }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_admin_racquet_index') }}">back to list</a>
-
-    <a href="{{ path('app_admin_racquet_edit', {'id': racquet.id}) }}">edit</a>
-
-    {{ include('admin_racquet/_delete_form.html.twig') }}
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-md-8 offset-md-2">
+				<div class="card shadow-sm">
+					<div class="card-header bg-primary text-white">
+						<h1 class="h3 mb-0">Racquet Details</h1>
+					</div>
+					<div class="card-body">
+						<table class="table table-hover table-striped">
+							<tbody>
+								<tr>
+									<th class="w-25">Id</th>
+									<td>{{ racquet.id }}</td>
+								</tr>
+								<tr>
+									<th>Image</th>
+									<img src="{{ absolute_url(asset('img/racquet/' ~ racquet.id ~ '.' ~ racquet.imgExtension)) }}" alt="Racquet Image" class="img-fluid" style="max-width: 300px;">
+								</tr>
+								<tr>
+									<th>Brand</th>
+									<td>{{ racquet.brand }}</td>
+								</tr>
+								<tr>
+									<th>Model</th>
+									<td>{{ racquet.model }}</td>
+								</tr>
+								<tr>
+									<th>Head Size</th>
+									<td>{{ racquet.headSize }}</td>
+								</tr>
+								<tr>
+									<th>String Pattern</th>
+									<td>{{ racquet.stringPattern }}</td>
+								</tr>
+								<tr>
+									<th>Weight</th>
+									<td>{{ racquet.weight }}</td>
+								</tr>
+								<tr>
+									<th>Grip Size</th>
+									<td>{{ racquet.gripSize }}</td>
+								</tr>
+								<tr>
+									<th>Price</th>
+									<td>{{ racquet.price }} €</td>
+								</tr>
+								<tr>
+									<th>Quantity</th>
+									<td>
+										<span class="badge bg-info">{{ racquet.quantity }}</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="card-footer d-flex justify-content-between align-items-center">
+						<a href="{{ path('app_admin_racquet_index') }}" class="btn btn-secondary">
+							<i class="bi bi-arrow-left"></i>
+							Back to List
+						</a>
+						<div>
+							<a href="{{ path('app_admin_racquet_edit', {'id': racquet.id}) }}" class="btn btn-warning me-2">
+								<i class="bi bi-pencil"></i>
+								Edit
+							</a>
+							{{ include('admin_racquet/_delete_form.html.twig') }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

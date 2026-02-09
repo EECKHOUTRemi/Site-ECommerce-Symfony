@@ -5,7 +5,9 @@ namespace App\Form;
 use App\Entity\Racquet;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class RacquetType extends AbstractType
 {
@@ -20,6 +22,21 @@ class RacquetType extends AbstractType
             ->add('grip_size')
             ->add('price')
             ->add('quantity')
+            ->add('img', FileType::class, [
+                'label' => 'Image (PNG, JPEG, JPG file)',
+                'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/png',
+                            'image/jpeg',
+                            'image/jpg'
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid image file (PNG, JPEG, JPG)'
+                    ])
+                ],
+            ])
         ;
     }
 

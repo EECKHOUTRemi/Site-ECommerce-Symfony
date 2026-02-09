@@ -3,9 +3,24 @@
 {% block title %}New Racquet{% endblock %}
 
 {% block body %}
-    <h1>Create new Racquet</h1>
-
-    {{ include('admin_racquet/_form.html.twig') }}
-
-    <a href="{{ path('app_admin_racquet_index') }}">back to list</a>
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-md-8 offset-md-2">
+				<div class="card shadow-sm">
+					<div class="card-header bg-success text-white">
+						<h1 class="h3 mb-0">Create New Racquet</h1>
+					</div>
+					<div class="card-body">
+						{{ include('admin_racquet/_form.html.twig', { 'form': form }) }}
+					</div>
+					<div class="card-footer">
+						<a href="{{ path('app_admin_racquet_index') }}" class="btn btn-secondary">
+							<i class="bi bi-arrow-left"></i>
+							Back to List
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
