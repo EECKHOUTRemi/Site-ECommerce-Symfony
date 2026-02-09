@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\RacquetOrderedRepository;
 
 /**
  * @ORM\Entity(repositoryClass=RacquetOrderedRepository::class)
@@ -25,6 +25,8 @@ class RacquetOrdered
 
     /**
      * @ORM\Column(type="smallint")
+     * @Assert\NotBlank()
+     * @Assert\GreaterThanOrEqual(1)
      */
     private $quantity;
 

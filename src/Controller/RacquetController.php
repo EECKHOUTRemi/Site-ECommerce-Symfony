@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Controller;
+
+use DateTime;
+use App\Entity\Racquet;
+use App\Form\AddToCartType;
+use App\Manager\CartManager;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+class RacquetController extends AbstractController
+{
+    /**
+     * @Route("/racquet/{id}", name="racquet_detail")
+     */
+    public function detail(Racquet $racquet, Request $request, CartManager $cartManager)
+    {
+        $form = $this->createForm(AddToCartType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            $data->setRacquet($racquet);
+
+            $cart = $cartManager->getCurrentCart();
+            $cart
+                ->addRacquet($data)
+                ->setUpdatedAt(new \DateTime());
+
+            $cartManager->save($cart);
+
+            return $this->redirectToRoute('racquet_detail', ['id' => $racquet->getId()]);
+        }
+
+        return $this->render('racquet/detail.html.twig', [
+            'racquet' => $racquet,
+            'form' => $form->createView()
+        ]);
+    }
+}

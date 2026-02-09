@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ racquet.brand }} {{ racquet.model }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h1 class="h3 mb-0">{{ racquet.brand }} {{ racquet.model }}</h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-3">
+                                <img src="{{ asset('img/racquet/' ~ racquet.id ~ '.' ~ racquet.imgExtension) }}" alt="{{ racquet.brand }} {{ racquet.model }}" class="img-thumbnail" style="max-width: 100%;">
+                            </div>
+                            <div class="col-md-8">
+                                <h2 class="text-primary mb-4">{{ racquet.price }} €</h2>
+                                
+                                <table class="table table-hover table-sm mb-4">
+                                    <tbody>
+                                        <tr>
+                                            <th class="w-50">Head Size</th>
+                                            <td>{{ racquet.headSize }} cm²</td>
+                                        </tr>
+                                        <tr>
+                                            <th>String Pattern</th>
+                                            <td>{{ racquet.stringPattern }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Weight</th>
+                                            <td>{{ racquet.weight }} g</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Grip Size</th>
+                                            <td>{{ racquet.gripSize }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>In Stock</th>
+                                            <td>
+                                                <span class="badge 
+                                                {% if racquet.quantity >= 30 %}
+                                                    bg-success"
+                                                {% elseif racquet.quantity >= 10 %}
+                                                    bg-warning"
+                                                {% else %}
+                                                    bg-danger"
+                                                {% endif %}
+                                                >{{ racquet.quantity }} available</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                {{ form_start(form) }}
+                                <div class="form-group mb-3">
+                                    {{ form_label(form.quantity, 'Quantity', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                                    {{ form_widget(form.quantity, {
+                                        'attr': {
+                                            'class': 'form-control ' ~ (form.quantity.vars.valid ? '' : 'is-invalid'),
+                                            'style': 'width: 100px;'
+                                        }
+                                    }) }}
+                                    <div class="invalid-feedback">
+                                        {{ form_errors(form.quantity) }}
+                                    </div>
+                                </div>
+                                {{ form_widget(form.add, {'attr': {'class': 'btn btn-success btn-lg'}}) }}
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('app_home') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to Products
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
