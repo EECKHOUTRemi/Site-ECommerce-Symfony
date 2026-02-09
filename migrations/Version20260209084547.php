@@ -14,7 +14,7 @@ final class Version20260209084547 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Added img_extension column to racquet table to store the file extension of the uploaded image';
     }
 
     public function up(Schema $schema): void
