@@ -57,6 +57,11 @@ class Racquet
      */
     private $quantity;
 
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $imgExtension;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +159,18 @@ class Racquet
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getImgExtension(): ?string
+    {
+        return $this->imgExtension;
+    }
+
+    public function setImgExtension(?string $imgExtension): self
+    {
+        $this->imgExtension = $imgExtension;
 
         return $this;
     }

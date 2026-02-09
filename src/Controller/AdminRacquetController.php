@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Racquet;
 use App\Form\RacquetType;
+use App\Handler\NewRacquetHandler;
 use App\Repository\RacquetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminRacquetController extends AbstractController
 {
+
+    /** @var NewRacquetHandler */
+    private $newRacquetHandler;
+
+    public function __construct(NewRacquetHandler $newRacquetHandler)
+    {
+        $this->newRacquetHandler = $newRacquetHandler;
+    }
+
     /**
      * @Route("/", name="app_admin_racquet_index", methods={"GET"})
      */
@@ -28,15 +38,14 @@ class AdminRacquetController extends AbstractController
     /**
      * @Route("/new", name="app_admin_racquet_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, RacquetRepository $racquetRepository): Response
+    public function new(Request $request): Response
     {
         $racquet = new Racquet();
         $form = $this->createForm(RacquetType::class, $racquet);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $racquetRepository->add($racquet, true);
-
+            $this->newRacquetHandler->handleForm($form, $racquet);
             return $this->redirectToRoute('app_admin_racquet_index', [], Response::HTTP_SEE_OTHER);
         }
 
