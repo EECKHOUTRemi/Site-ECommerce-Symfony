@@ -38,23 +38,31 @@
 										<strong>{{ racquet.brand }}</strong>
 									</td>
 									<td>{{ racquet.model }}</td>
-									<td>{{ racquet.headSize }}</td>
+									<td>{{ racquet.headSize ? racquet.headSize ~ ' cm²' : '' }}</td>
 									<td>{{ racquet.stringPattern }}</td>
-									<td>{{ racquet.weight }}</td>
+									<td>{{ racquet.weight ? racquet.weight ~ ' g' : '' }}</td>
 									<td>{{ racquet.gripSize }}</td>
 									<td>
-										<span class="badge bg-success">${{ racquet.price }}</span>
+										<span class="badge bg-info">{{ racquet.price }} €</span>
 									</td>
 									<td>
-										<span class="badge bg-info">{{ racquet.quantity }}</span>
+										<span class= "badge 
+									{% if racquet.quantity >= 30 %}
+										bg-success"
+									{% elseif racquet.quantity >= 10 %}
+										bg-warning"
+									{% else %}
+										bg-danger"
+									{% endif %}
+										>{{ racquet.quantity }}</span>
 									</td>
 									<td class="text-center">
 										<div class="btn-group btn-group-sm" role="group">
-											<a href="{{ path('app_admin_racquet_show', {'id': racquet.id}) }}" class="btn btn-outline-primary" title="Show">
-												<i class="bi bi-eye"></i>
+											<a href="{{ path('app_admin_racquet_show', {'id': racquet.id}) }}" class="btn btn-outline-primary">
+												<i class="bi bi-eye">Show</i>
 											</a>
-											<a href="{{ path('app_admin_racquet_edit', {'id': racquet.id}) }}" class="btn btn-outline-warning" title="Edit">
-												<i class="bi bi-pencil"></i>
+											<a href="{{ path('app_admin_racquet_edit', {'id': racquet.id}) }}" class="btn btn-outline-warning">
+												<i class="bi bi-pencil">Edit</i>
 											</a>
 										</div>
 									</td>

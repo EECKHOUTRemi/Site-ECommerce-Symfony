@@ -33,7 +33,7 @@
 										</tr>
 										<tr>
 											<th>Head Size</th>
-											<td>{{ racquet.headSize }}</td>
+											<td>{{ racquet.headSize }} cm²</td>
 										</tr>
 										<tr>
 											<th>String Pattern</th>
@@ -41,7 +41,7 @@
 										</tr>
 										<tr>
 											<th>Weight</th>
-											<td>{{ racquet.weight }}</td>
+											<td>{{ racquet.weight }} g</td>
 										</tr>
 										<tr>
 											<th>Grip Size</th>
@@ -49,13 +49,22 @@
 										</tr>
 										<tr>
 											<th>Price</th>
-											<td>{{ racquet.price }}
-												€</td>
+											<td>
+												<span class="badge bg-info">{{ racquet.price }} €</span>
+											</td>
 										</tr>
 										<tr>
 											<th>Quantity</th>
 											<td>
-												<span class="badge bg-info">{{ racquet.quantity }}</span>
+												<span class= "badge 
+											{% if racquet.quantity >= 30 %}
+												bg-success"
+											{% elseif racquet.quantity >= 10 %}
+												bg-warning"
+											{% else %}
+												bg-danger"
+											{% endif %}
+												>{{ racquet.quantity }}</span>
 											</td>
 										</tr>
 									</tbody>
