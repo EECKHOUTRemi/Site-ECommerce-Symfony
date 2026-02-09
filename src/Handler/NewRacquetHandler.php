@@ -22,6 +22,20 @@ class NewRacquetHandler
         $this->em = $em;
     }
 
+    public function handleFormData(Racquet $racquet, $form)
+    {
+        $racquet->setBrand($form->get('brand')->getData());
+        $racquet->setModel($form->get('model')->getData());
+        $racquet->setHeadSize($form->get('head_size')->getData());
+        $racquet->setStringPattern($form->get('string_pattern')->getData());
+        $racquet->setWeight($form->get('weight')->getData());
+        $racquet->setGripSize($form->get('grip_size')->getData());
+        $racquet->setPrice($form->get('price')->getData());
+        $racquet->setQuantity($form->get('quantity')->getData());
+
+        return $racquet;
+    }
+
     public function handleImg($form, $racquet)
     {
         /** @var UploadedFile $imageFile */
@@ -43,14 +57,7 @@ class NewRacquetHandler
     {
         $repo = $this->em->getRepository(Racquet::class);
 
-        $racquet->setBrand($form->get('brand')->getData());
-        $racquet->setModel($form->get('model')->getData());
-        $racquet->setHeadSize($form->get('head_size')->getData());
-        $racquet->setStringPattern($form->get('string_pattern')->getData());
-        $racquet->setWeight($form->get('weight')->getData());
-        $racquet->setGripSize($form->get('grip_size')->getData());
-        $racquet->setPrice($form->get('price')->getData());
-        $racquet->setQuantity($form->get('quantity')->getData());
+        $racquet = $this->handleFormData($racquet, $form);
 
         $repo->add($racquet, true);
 
