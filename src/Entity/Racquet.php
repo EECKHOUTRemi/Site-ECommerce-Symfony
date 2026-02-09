@@ -48,7 +48,7 @@ class Racquet
     private $grip_size;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="float")
      */
     private $price;
 
@@ -58,7 +58,7 @@ class Racquet
     private $quantity;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=10)
      */
     private $imgExtension;
 
@@ -139,12 +139,12 @@ class Racquet
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(int $price): self
+    public function setPrice(float $price): self
     {
         $this->price = $price;
 
@@ -163,12 +163,12 @@ class Racquet
         return $this;
     }
 
-    public function getImgExtension(): ?string
+    public function getImgExtension(): string
     {
         return $this->imgExtension;
     }
 
-    public function setImgExtension(?string $imgExtension): self
+    public function setImgExtension(string $imgExtension): self
     {
         $this->imgExtension = $imgExtension;
 
