@@ -9,12 +9,31 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_admin_racquet_index') }}">
-						<i class="bi bi-list"></i>
-						All Racquets
-					</a>
-				</li>
+				{% if is_granted('ROLE_ADMIN') %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_admin_racquet_index') }}">
+							<i class="bi bi-list"></i>
+							All Racquets
+						</a>
+					</li>
+				{% endif %}
+			</ul>
+			<ul class="navbar-nav">
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<li class="nav-item">
+						<a class="nav-link text-danger" href="{{ path('app_logout') }}">
+							<i class="bi bi-box-arrow-right"></i>
+							Logout
+						</a>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_login') }}">
+							<i class="bi bi-box-arrow-in-right"></i>
+							Login
+						</a>
+					</li>
+				{% endif %}
 			</ul>
 		</div>
 	</div>
