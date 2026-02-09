@@ -36,31 +36,24 @@ class NewRacquetHandler
         return $racquet;
     }
 
-    public function handleImg($form, $racquet)
-    {
-        /** @var UploadedFile $imageFile */
-        $imageFile = $form->get('img')->getData();
-
-        $extension = $imageFile->guessExtension();
-        $newFilename = $racquet->getId() . '.' . $extension;
-
-        try {
-            $imageFile->move("img/racquet", $newFilename);
-            $racquet->setImgExtension($extension);
-            $this->em->flush();
-        } catch (FileException $e) {
-            // ... handle exception if something happens during file upload
-        }
-    }
-
     public function handleForm($form, Racquet $racquet)
     {
         $repo = $this->em->getRepository(Racquet::class);
 
         $racquet = $this->handleFormData($racquet, $form);
 
+        /** @var UploadedFile $imageFile */
+        $imageFile = $form->get('img')->getData();
+        $extension = $imageFile->guessExtension();
+        $racquet->setImgExtension($extension);
+
         $repo->add($racquet, true);
 
-        $this->handleImg($form, $racquet);
+        $newFilename = $racquet->getId() . '.' . $extension;
+        try {
+            $imageFile->move("img/racquet", $newFilename);
+        } catch (FileException $e) {
+            // ... handle exception if something happens during file upload
+        }
     }
 }
