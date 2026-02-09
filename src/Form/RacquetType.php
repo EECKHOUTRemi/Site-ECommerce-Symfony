@@ -25,6 +25,7 @@ class RacquetType extends AbstractType
             ->add('img', FileType::class, [
                 'label' => 'Image (PNG, JPEG, JPG file)',
                 'mapped' => false,
+                'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',

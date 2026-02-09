@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\Racquet;
 use App\Form\RacquetType;
 use App\Handler\NewRacquetHandler;
+use App\Handler\UpdateRacquetHandler;
 use App\Repository\RacquetRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/admin/racquet")
@@ -20,9 +22,13 @@ class AdminRacquetController extends AbstractController
     /** @var NewRacquetHandler */
     private $newRacquetHandler;
 
-    public function __construct(NewRacquetHandler $newRacquetHandler)
+    /** @var UpdateRacquetHandler */
+    private $updateRacquetHandler;
+
+    public function __construct(NewRacquetHandler $newRacquetHandler, UpdateRacquetHandler $updateRacquetHandler)
     {
         $this->newRacquetHandler = $newRacquetHandler;
+        $this->updateRacquetHandler = $updateRacquetHandler;
     }
 
     /**
@@ -44,9 +50,16 @@ class AdminRacquetController extends AbstractController
         $form = $this->createForm(RacquetType::class, $racquet);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->newRacquetHandler->handleForm($form, $racquet);
-            return $this->redirectToRoute('app_admin_racquet_index', [], Response::HTTP_SEE_OTHER);
+        if ($form->isSubmitted()) {
+            $imageFile = $form->get('img')->getData();
+            if (!$imageFile) {
+                $form->get('img')->addError(new FormError('An image is required when creating a new racquet.'));
+            }
+            
+            if ($form->isValid() && $imageFile) {
+                $this->newRacquetHandler->handleForm($form, $racquet);
+                return $this->redirectToRoute('app_admin_racquet_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->renderForm('admin_racquet/new.html.twig', [
@@ -74,7 +87,7 @@ class AdminRacquetController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $racquetRepository->add($racquet, true);
+            $this->updateRacquetHandler->handle($form, $racquet);
 
             return $this->redirectToRoute('app_admin_racquet_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -90,7 +103,7 @@ class AdminRacquetController extends AbstractController
      */
     public function delete(Request $request, Racquet $racquet, RacquetRepository $racquetRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$racquet->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $racquet->getId(), $request->request->get('_token'))) {
             $racquetRepository->remove($racquet, true);
         }
 

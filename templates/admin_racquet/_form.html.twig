@@ -24,7 +24,7 @@
 	{{ form_row(form.quantity, {'attr': {'class': 'form-control'}, 'label_attr': {'class': 'form-label'}}) }}
 </div>
 <div class="mb-3">
-	{{ form_row(form.img, {'attr': {'class': 'form-control'}, 'label_attr': {'class': 'form-label'}}) }}
+	{{ form_row(form.img, {'attr': {'class': 'form-control'}, 'label_attr': {'class': 'form-label'}, 'help': 'Leave empty to keep the current image (only for edit)'}) }}
 </div>
 <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
