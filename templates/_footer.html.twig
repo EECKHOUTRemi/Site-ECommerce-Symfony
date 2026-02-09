@@ -1,0 +1,30 @@
+{% if app.user %}
+	<footer class="bg-dark text-light mt-auto pt-4 ">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-md-4 mb-3 ">
+					<h5 class="fw-bold">{{ app_name|default('ECommerce Raquettes') }}</h5>
+				</div>
+
+				<div class="col-md-4 mb-3">
+					<h6>Compte</h6>
+					{% if app.user %}
+						<p class="small">Connecté :
+							{{ app.user.username ~ ' (' ~ app.user.roles|map(p => "#{p}")|join(', ') ~ ') ' }}</p>
+						<a href="{{ path('app_logout') }}" class="text-danger">Logout</a>
+					{% else %}
+						<a href="{{ path('app_login') }}" class="text-light">Login</a>
+					{% endif %}
+				</div>
+
+			</div>
+
+			<hr class="border-secondary">
+
+			<div class="text-center pb-3 small">
+				© {{ "now"|date("Y") }}	Ecommerce Raquettes
+			</div>
+		</div>
+	</footer>
+{% endif %}
