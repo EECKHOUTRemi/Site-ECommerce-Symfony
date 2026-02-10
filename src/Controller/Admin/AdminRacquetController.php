@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Racquet;
 use App\Form\RacquetType;
-use App\Handler\NewRacquetHandler;
-use App\Handler\UpdateRacquetHandler;
+use App\Manager\NewRacquetManager;
+use App\Manager\UpdateRacquetManager;
 use App\Repository\RacquetRepository;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,16 +21,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdminRacquetController extends AbstractController
 {
 
-    /** @var NewRacquetHandler */
-    private $newRacquetHandler;
+    /** @var NewRacquetManager */
+    private $newRacquetManager;
 
-    /** @var UpdateRacquetHandler */
-    private $updateRacquetHandler;
+    /** @var UpdateRacquetManager */
+    private $updateRacquetManager;
 
-    public function __construct(NewRacquetHandler $newRacquetHandler, UpdateRacquetHandler $updateRacquetHandler)
+    public function __construct(NewRacquetManager $newRacquetManager, UpdateRacquetManager $updateRacquetManager)
     {
-        $this->newRacquetHandler = $newRacquetHandler;
-        $this->updateRacquetHandler = $updateRacquetHandler;
+        $this->newRacquetManager = $newRacquetManager;
+        $this->updateRacquetManager = $updateRacquetManager;
     }
 
     /**
@@ -50,7 +50,7 @@ class AdminRacquetController extends AbstractController
     {
         $racquet = new Racquet();
         $form = $this->createForm(RacquetType::class, $racquet);
-        $form->handleRequest($request);
+        $form->HandleRequest($request);
 
         if ($form->isSubmitted()) {
             $imageFile = $form->get('img')->getData();
@@ -59,7 +59,7 @@ class AdminRacquetController extends AbstractController
             }
             
             if ($form->isValid() && $imageFile) {
-                $this->newRacquetHandler->handleForm($form, $racquet);
+                $this->newRacquetManager->handleForm($form, $racquet);
                 return $this->redirectToRoute('app_admin_racquet_index', [], Response::HTTP_SEE_OTHER);
             }
         }
@@ -86,10 +86,10 @@ class AdminRacquetController extends AbstractController
     public function edit(Request $request, Racquet $racquet, RacquetRepository $racquetRepository): Response
     {
         $form = $this->createForm(RacquetType::class, $racquet);
-        $form->handleRequest($request);
+        $form->HandleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->updateRacquetHandler->handle($form, $racquet);
+            $this->updateRacquetManager->handle($form, $racquet);
 
             return $this->redirectToRoute('app_admin_racquet_index', [], Response::HTTP_SEE_OTHER);
         }
