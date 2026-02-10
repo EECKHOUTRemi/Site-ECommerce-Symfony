@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f28c9d57a8b301c09110e0310559293",
+    "content-hash": "6dd326cefd8546851d2d3f301ee2772d",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -8090,6 +8090,45 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.12.1"
             },
             "time": "2025-10-29T15:56:20+00:00"
+        },
+        {
+            "name": "xin/var-dumper",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://gitee.com/liuxiaojinla/php-var-dumper",
+                "reference": "9b1e282b2158cd6fc3850950b4b152c645174625"
+            },
+            "require": {
+                "php": ">=7.1.9",
+                "symfony/var-dumper": "^5.4"
+            },
+            "type": "library",
+            "extra": {
+                "hyperf": {
+                    "config": "Xin\\VarDumper\\Hyperf\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Xin\\VarDumper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "晋",
+                    "email": "657306123@qq.com"
+                }
+            ],
+            "description": "这是一款将变量用symfony/var-dumper打印到浏览器的包，支持Webman，Hyperf等框架。",
+            "time": "2024-06-19T06:33:10+00:00"
         }
     ],
     "packages-dev": [
