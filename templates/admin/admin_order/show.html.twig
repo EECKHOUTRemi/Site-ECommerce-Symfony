@@ -215,6 +215,7 @@
 			<div
 				class="col-md-4">
 				{# Quick Actions #}
+				{% if order.status != 'cart' %}
 				<div class="card shadow-sm mb-4">
 					<div class="card-header bg-info text-white">
 						<h5 class="mb-0">
@@ -222,38 +223,20 @@
 							Quick Actions
 						</h5>
 					</div>
+					{{ form_start(form) }}
 					<div class="card-body">
 						<div class="d-grid gap-2">
-							{% if order.status == 'pending' or order.status == 'pending_confirmation' %}
-								<button class="btn btn-success" onclick="updateOrderStatus({{ order.id }}, 'confirmed')">
-									<i class="bi bi-check-circle"></i>
-									Confirm Order
-								</button>
+							{% if order.status not in ['delivered', 'cancelled'] %}
+								{{ form_widget(form.confirm) }}
 							{% endif %}
 
-							{% if order.status == 'confirmed' %}
-								<button class="btn btn-primary" onclick="updateOrderStatus({{ order.id }}, 'shipped')">
-									<i class="bi bi-truck"></i>
-									Mark as Shipped
-								</button>
-							{% endif %}
-
-							{% if order.status == 'shipped' %}
-								<button class="btn btn-success" onclick="updateOrderStatus({{ order.id }}, 'delivered')">
-									<i class="bi bi-box-seam"></i>
-									Mark as Delivered
-								</button>
-							{% endif %}
-
-							{% if order.status not in ['cancelled', 'delivered'] %}
-								<button class="btn btn-danger" onclick="updateOrderStatus({{ order.id }}, 'cancelled')">
-									<i class="bi bi-x-circle"></i>
-									Cancel Order
-								</button>
+							{% if order.status not in ['delivered'] %}
+								{{ form_widget(form.cancel) }}
 							{% endif %}
 						</div>
 					</div>
 				</div>
+				{% endif %}
 
 				{# Order Timeline #}
 				<div class="card shadow-sm">
@@ -287,14 +270,4 @@
 			</div>
 		</div>
 	</div>
-
-	<script>
-		function updateOrderStatus(orderId, status) {
-if (confirm('Are you sure you want to update the order status?')) {
-// TODO: Implement AJAX call to update order status
-// For now, redirect to a status update route
-window.location.href = '{{ path('app_admin_orders_index') }}';
-}
-}
-	</script>
 {% endblock %}

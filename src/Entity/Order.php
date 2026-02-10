@@ -32,6 +32,10 @@ class Order
 
     const STATUS_CART = 'cart';
     const STATUS_PENDING = 'pending';
+    const STATUS_CONFIRMED = 'confirmed';
+    const STATUS_SHIPPED = 'shipped';
+    const STATUS_DELIVERED = 'delivered';
+    const STATUS_CANCELLED = 'cancelled';
 
     /**
      * @ORM\Column(type="datetime")

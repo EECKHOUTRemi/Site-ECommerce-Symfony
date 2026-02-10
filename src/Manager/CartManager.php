@@ -52,9 +52,17 @@ class CartManager{
         $this->cartSessionStorage->setCart($cart);
     }
 
-    public function setPendingStatus(Order $cart){
-        $cart->setStatus(Order::STATUS_PENDING);
+    public function remove(){
         $this->em->flush();
         $this->cartSessionStorage->clearCart();
+
+    }
+
+    public function setStatus(Order $cart, $status){
+        $cart->setStatus($status);
+        $this->em->flush();
+        if ($status === Order::STATUS_PENDING){
+            $this->cartSessionStorage->clearCart();
+        }
     }
 }

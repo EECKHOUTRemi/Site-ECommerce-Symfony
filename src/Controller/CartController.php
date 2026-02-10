@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use DateTime;
+use App\Entity\Order;
 use App\Form\CartType;
 use App\Manager\CartManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,13 +48,13 @@ class CartController extends AbstractController
      */
     public function checkout(CartManager $cartManager){
         $cart = $cartManager->getCurrentCart();
-
+        
         if ($cart->getRacquets()->isEmpty()) {
             $this->addFlash('error', 'Your cart is empty. Please add items before checkout.');
             return $this->redirectToRoute('app_cart_index');
-        }
-
-        $cartManager->setPendingStatus($cart);
+            }
+        
+        $cartManager->setStatus($cart, Order::STATUS_PENDING);
         
         return $this->render('cart/checkout.html.twig', [
             'order' => $cart
