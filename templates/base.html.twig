@@ -16,12 +16,12 @@
 		{% endblock %}
 	</head>
 	<body class="d-flex flex-column min-vh-100">
-		{% include '_navbar.html.twig' %}
+		{% include 'base/_navbar.html.twig' %}
 
 		<div class="pb-4 flex-grow-1"> 
             {% block body %}{% endblock %}
         </div>
 
-		{% include '_footer.html.twig' %}
+		{% include 'base/_footer.html.twig' %}
 		</body>
 	</html>
