@@ -31,6 +31,7 @@ class Order
     private $status = self::STATUS_CART;
 
     const STATUS_CART = 'cart';
+    const STATUS_PENDING = 'pending';
 
     /**
      * @ORM\Column(type="datetime")
@@ -41,6 +42,12 @@ class Order
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -141,5 +148,17 @@ class Order
             $total += $racquet->getTotal();
         }
         return $total;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }
