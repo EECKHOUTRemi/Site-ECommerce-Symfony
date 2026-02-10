@@ -31,6 +31,7 @@ class CartType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Order::class,
+            'csrf_protection' => true,
         ]);
     }
 }

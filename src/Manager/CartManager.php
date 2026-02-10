@@ -45,7 +45,9 @@ class CartManager{
     }
 
     public function save(Order $cart){
-        $this->em->persist($cart);
+        if(!$cart->getId()){
+            $this->em->persist($cart);
+        }
         $this->em->flush();
         $this->cartSessionStorage->setCart($cart);
     }

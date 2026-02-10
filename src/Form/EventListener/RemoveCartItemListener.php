@@ -25,9 +25,9 @@ class RemoveCartItemListener implements EventSubscriberInterface
         }
 
         foreach ($form->get('racquets')->all() as $child) {
-            if ($child->has('remove') && $child->get('remove')->getData()) {
-                $cart->removeRacquet($child->getData());
-                break;
+            if ($child->has('remove') && $child->get('remove')->getData() === true) {
+                $racquetOrdered = $child->getData();
+                $cart->removeRacquet($racquetOrdered);
             }
         }
     }

@@ -26,7 +26,7 @@ class CartController extends AbstractController
             $cart->setUpdatedAt(new \DateTime());
             $cartManager->save($cart);
 
-            return $this->redirectToRoute('cart');
+            return $this->redirectToRoute('app_cart');
         }
 
         return $this->render('cart/index.html.twig', [
