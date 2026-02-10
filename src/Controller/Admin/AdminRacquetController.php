@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/admin/racquet")
+ * @Route("/admin/racquet", name="app_admin_racquet_")
  * @IsGranted("ROLE_ADMIN")
  */
 class AdminRacquetController extends AbstractController
@@ -34,17 +34,17 @@ class AdminRacquetController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_admin_racquet_index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET"})
      */
     public function index(RacquetRepository $racquetRepository): Response
     {
-        return $this->render('admin_racquet/index.html.twig', [
+        return $this->render('admin/admin_racquet/index.html.twig', [
             'racquets' => $racquetRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="app_admin_racquet_new", methods={"GET", "POST"})
+     * @Route("/new", name="new", methods={"GET", "POST"})
      */
     public function new(Request $request): Response
     {
@@ -64,14 +64,14 @@ class AdminRacquetController extends AbstractController
             }
         }
 
-        return $this->renderForm('admin_racquet/new.html.twig', [
+        return $this->renderForm('admin/admin_racquet/new.html.twig', [
             'racquet' => $racquet,
             'form' => $form,
         ]);
     }
 
     /**
-     * @Route("/{id}", name="app_admin_racquet_show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET"})
      */
     public function show(Racquet $racquet): Response
     {
@@ -81,7 +81,7 @@ class AdminRacquetController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_admin_racquet_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Racquet $racquet, RacquetRepository $racquetRepository): Response
     {
@@ -94,14 +94,14 @@ class AdminRacquetController extends AbstractController
             return $this->redirectToRoute('app_admin_racquet_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('admin_racquet/edit.html.twig', [
+        return $this->renderForm('admin/admin_racquet/edit.html.twig', [
             'racquet' => $racquet,
             'form' => $form,
         ]);
     }
 
     /**
-     * @Route("/{id}", name="app_admin_racquet_delete", methods={"POST"})
+     * @Route("/{id}", name="delete", methods={"POST"})
      */
     public function delete(Request $request, Racquet $racquet, RacquetRepository $racquetRepository): Response
     {
