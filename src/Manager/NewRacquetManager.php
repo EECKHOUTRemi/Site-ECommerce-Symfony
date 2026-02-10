@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Handler;
+namespace App\Manager;
 
 use App\Entity\Racquet;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-class NewRacquetHandler
+class NewRacquetManager
 {
     /** @var SluggerInterface */
     private $slugger;

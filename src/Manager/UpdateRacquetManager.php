@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Handler;
+namespace App\Manager;
 
-use App\Handler\NewRacquetHandler;
+use App\Manager\NewRacquetManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-class UpdateRacquetHandler{
+class UpdateRacquetManager{
 
-    /** @var NewRacquetHandler */
-    private $newRacquetHandler;
+    /** @var NewRacquetManager */
+    private $newRacquetManager;
 
     /** @var EntityManagerInterface */
     private $em;
 
-    public function __construct(EntityManagerInterface $em, NewRacquetHandler $newRacquetHandler)
+    public function __construct(EntityManagerInterface $em, NewRacquetManager $newRacquetManager)
     {
         $this->em = $em;
-        $this->newRacquetHandler = $newRacquetHandler;
+        $this->newRacquetManager = $newRacquetManager;
     }
 
     public function handle($form, $racquet)
     {
-        $this->newRacquetHandler->handleFormData($racquet, $form);
+        $this->newRacquetManager->handleFormData($racquet, $form);
         $this->em->flush();
 
         /** @var UploadedFile $imageFile */
