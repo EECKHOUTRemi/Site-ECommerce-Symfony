@@ -6,12 +6,25 @@ use DateTime;
 use App\Entity\Racquet;
 use App\Form\AddToCartType;
 use App\Manager\CartManager;
+use App\Repository\RacquetRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RacquetController extends AbstractController
 {
+
+    /**
+    * @Route("/racquets", name="racquets")
+    */
+    public function racquets(RacquetRepository $racquetRepository): Response
+    {
+        return $this->render('racquet/index.html.twig', [
+            'racquets' => $racquetRepository->findAll(),
+        ]);
+    }
+
     /**
      * @Route("/racquet/{id}", name="racquet_detail")
      */
