@@ -21,7 +21,9 @@ class ClearCartListener implements EventSubscriberInterface{
             return;
         }
 
-        if (!$form->get('clear')->getData()){
+        /** @var SubmitType $clearButton  */
+        $clearButton = $form->get('clear');
+        if (!$clearButton->isClicked()) {
             return;
         }
 

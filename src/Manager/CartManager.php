@@ -51,4 +51,10 @@ class CartManager{
         $this->em->flush();
         $this->cartSessionStorage->setCart($cart);
     }
+
+    public function setPendingStatus(Order $cart){
+        $cart->setStatus(Order::STATUS_PENDING);
+        $this->em->flush();
+        $this->cartSessionStorage->clearCart();
+    }
 }

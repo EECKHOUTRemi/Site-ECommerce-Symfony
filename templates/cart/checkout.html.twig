@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order Confirmation
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card shadow-lg">
+					<div class="card-header bg-success text-white text-center">
+						<h2 class="mb-0">
+							<i class="bi bi-check-circle-fill"></i>
+							Order Placed Successfully!
+						</h2>
+					</div>
+					<div class="card-body text-center p-5">
+						<div class="alert alert-info mb-4">
+							<h4 class="alert-heading">
+								<i class="bi bi-clock-history"></i>
+								Pending Confirmation
+							</h4>
+							<p class="mb-0">
+								Your order #{{ order.id }}
+								is currently being reviewed and will be confirmed shortly.
+							</p>
+						</div>
+
+						<div class="order-details mb-4">
+							<h5 class="text-muted mb-3">Order Details</h5>
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead class="table-light">
+										<tr>
+											<th>Order Number</th>
+											<th>Date</th>
+											<th>Status</th>
+											<th>Total</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<strong>#{{ order.id }}</strong>
+											</td>
+											<td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+											<td>
+												<span class="badge bg-warning text-dark">
+													{{ order.status|replace({'_': ' '})|title }}
+												</span>
+											</td>
+											<td>
+												<strong>{{ order.total|number_format(2, '.', ',') }}
+													€</strong>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="order-items mb-4">
+							<h5 class="text-muted mb-3">Items Ordered</h5>
+							<ul class="list-group">
+								{% for item in order.racquets %}
+									<li class="list-group-item d-flex justify-content-between align-items-center">
+										<div>
+											<strong>{{ item.racquet.brand }}
+												-
+												{{ item.racquet.model }}</strong>
+											<br>
+											<small class="text-muted">Quantity:
+												{{ item.quantity }}</small>
+										</div>
+										<span class="badge bg-primary rounded-pill">
+											{{ item.total|number_format(2, '.', ',') }}
+											€
+										</span>
+									</li>
+								{% endfor %}
+							</ul>
+						</div>
+
+						<div class="alert alert-light border">
+							<p class="mb-2">
+								<i class="bi bi-envelope"></i>
+								<strong>Next Steps:</strong>
+							</p>
+							<ul class="text-start mb-0">
+								<li>We will verify your order and contact you if needed</li>
+								<li>Once confirmed, your order will be prepared for shipping</li>
+							</ul>
+						</div>
+
+						<div class="mt-4">
+							<a href="{{ path('app_home') }}" class="btn btn-primary btn-lg me-2">
+								<i class="bi bi-house-door"></i>
+								Back to Home
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

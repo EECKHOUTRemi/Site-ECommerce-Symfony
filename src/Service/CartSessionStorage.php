@@ -42,6 +42,10 @@ class CartSessionStorage{
         ]);
     }
 
+    public function clearCart(){
+        $this->getSession()->clear();
+    }
+
     private function getCartId(): ?int
     {
         return $this->getSession()->get(self::CART_KEY_NAME);

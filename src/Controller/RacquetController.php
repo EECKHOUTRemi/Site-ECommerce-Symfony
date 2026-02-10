@@ -12,6 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
+/**
+ * @IsGranted("ROLE_USER")
+ */
 class RacquetController extends AbstractController
 {
 
@@ -41,7 +45,8 @@ class RacquetController extends AbstractController
             $cart = $cartManager->getCurrentCart();
             $cart
                 ->addRacquet($data)
-                ->setUpdatedAt(new \DateTime());
+                ->setUpdatedAt(new \DateTime())
+                ->setUser($this->getUser());
 
             $cartManager->save($cart);
 
