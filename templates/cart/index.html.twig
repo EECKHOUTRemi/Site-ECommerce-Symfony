@@ -26,7 +26,11 @@
                                             <img src={{ asset('img/racquet/' ~ item.vars.data.racquet.id ~ '.' ~ item.vars.data.racquet.imgExtension) }} width="64" alt="Product image">
                                         </div>
                                         <div class="col">
-                                            <h5 class="mb-1">{{ item.vars.data.racquet.brand ~ ' ' ~ item.vars.data.racquet.model }}</h5>
+                                            <h5 class="mb-1">
+                                                <a href={{ path("racquet_detail", {'id': item.vars.data.racquet.id}) }}>
+                                                    {{ item.vars.data.racquet.brand ~ ' ' ~ item.vars.data.racquet.model }}
+                                                </a>
+                                            </h5>
                                             <div class="form-inline mt-2">
                                                 <div class="form-group mb-0 mr-2">
                                                     {{ form_widget(item.quantity, {
