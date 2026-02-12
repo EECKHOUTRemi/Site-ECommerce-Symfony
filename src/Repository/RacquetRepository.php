@@ -48,7 +48,7 @@ class RacquetRepository extends ServiceEntityRepository
     */
     public function getRacquetPaginator(int $offset){
         $query = $this->createQueryBuilder('r')
-            ->orderBy('r.brand', 'ASC')
+            ->orderBy('r.id', 'ASC')
             ->setMaxResults(self::PAGINATOR_PER_PAGE)
             ->setFirstResult($offset)
             ->getQuery();
