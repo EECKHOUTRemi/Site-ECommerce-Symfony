@@ -34,7 +34,7 @@ class CartController extends AbstractController
             $cart->setUser($this->getUser());
             $cartManager->save($cart);
 
-            return $this->redirectToRoute('app_cart');
+            return $this->redirectToRoute('app_cart_index');
         }
 
         return $this->render('cart/index.html.twig', [
@@ -52,7 +52,7 @@ class CartController extends AbstractController
         if ($cart->getRacquets()->isEmpty()) {
             $this->addFlash('error', 'Your cart is empty. Please add items before checkout.');
             return $this->redirectToRoute('app_cart_index');
-            }
+        }
         
         $cartManager->setStatus($cart, Order::STATUS_PENDING);
         
