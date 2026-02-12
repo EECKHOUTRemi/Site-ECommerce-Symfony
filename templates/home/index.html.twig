@@ -101,14 +101,14 @@
 										€</h4>
 									<div class="mb-2">
 										<span class="badge
-											                                            {% if racquet.quantity >= 30 %}
-											                                                bg-success
-											                                            {% elseif racquet.quantity >= 10 %}
-											                                                bg-warning
-											                                            {% else %}
-											                                                bg-danger
-											                                            {% endif %}
-											                                        ">{{ racquet.quantity }}
+											{% if racquet.quantity >= 30 %}
+												bg-success
+											{% elseif racquet.quantity >= 10 %}
+												bg-warning
+											{% else %}
+												bg-danger
+											{% endif %}
+										">{{ racquet.quantity }}
 											in stock</span>
 									</div>
 								</div>
