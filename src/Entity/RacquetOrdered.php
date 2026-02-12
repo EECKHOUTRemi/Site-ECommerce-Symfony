@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Order;
+use App\Entity\Racquet;
+use App\Repository\RacquetOrderedRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=RacquetOrderedRepository::class)

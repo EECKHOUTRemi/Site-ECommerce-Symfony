@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\RacquetOrderedRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\Test\Constraint\ResponseIsUnprocessable;
 
 class UpdateRacquetManager{
 
@@ -59,17 +60,24 @@ class UpdateRacquetManager{
         }
     }
 
-    public function quantity(Order $order){
+    public function quantity(Order $order): void
+    {
         $orderId = $order->getId();
         $racquetsOrdered = $this->racquetOrderedRepository->findBy([
             'orderRef' => $orderId
         ]);
-        
-        foreach ($racquetsOrdered as $racquetOrdered){
-            $racquet = $this->racquetRepository->find($racquetOrdered->getRacquet()->getId());
-            $quantityRacquet = $racquet->getQuantity() - $racquetOrdered->getQuantity();
-            $racquet->setQuantity($quantityRacquet);
-            $this->em->flush();
+
+        foreach ($racquetsOrdered as $racquetOrdered) {
+            $stockedRacquet = $this->racquetRepository->find($racquetOrdered->getRacquet()->getId());
+            $quantityRacquet = $stockedRacquet->getQuantity() - $racquetOrdered->getQuantity();
+
+            if ($quantityRacquet < 0) {
+                throw new \RuntimeException('Too many racquets ordered.');
+            }
+
+            $stockedRacquet->setQuantity($quantityRacquet);
         }
+
+        $this->em->flush();
     }
 }

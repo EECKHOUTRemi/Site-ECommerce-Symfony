@@ -4,13 +4,14 @@ namespace App\Controller\Admin;
 
 use App\Entity\Order;
 use App\Form\OrderConfirmationType;
+use App\Manager\UpdateRacquetManager;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/admin/order", name="app_admin_orders_")
@@ -18,6 +19,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class AdminOrderController extends AbstractController
 {
+    /**
+     * @var UpdateRacquetManager
+     */
+    public $updateRacquetManager;
+
+    public function __construct(UpdateRacquetManager $updateRacquetManager) {
+        $this->updateRacquetManager = $updateRacquetManager;
+    }
+
     /**
      * @Route("/", name="index")
      */
@@ -47,8 +57,14 @@ class AdminOrderController extends AbstractController
 
         
         if ($confirmButton->isClicked()) {
-            $this->handleConfirmAction($order);
-            $em->flush();
+            try {
+                $this->handleConfirmAction($order);
+                $em->flush();
+                $this->addFlash('success', 'Order updated.');
+            } catch (\RuntimeException $e) {
+                $this->addFlash('danger', $e->getMessage());
+            }
+
             return $this->redirectToRoute('app_admin_orders_show', ['id' => $order->getId()]);
         } elseif ($cancelButton->isClicked()) {
             $order->setStatus(Order::STATUS_CANCELLED);
@@ -116,8 +132,8 @@ class AdminOrderController extends AbstractController
         switch ($order->getStatus()) {
             case Order::STATUS_PENDING:
             case 'pending_confirmation':
+                $this->updateRacquetManager->quantity($order);
                 $order->setStatus(Order::STATUS_CONFIRMED);
-                
                 break;
 
             case Order::STATUS_CONFIRMED:
