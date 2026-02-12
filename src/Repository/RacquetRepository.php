@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Racquet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,6 +17,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class RacquetRepository extends ServiceEntityRepository
 {
+
+    public const PAGINATOR_PER_PAGE = 9;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Racquet::class);
@@ -39,28 +43,16 @@ class RacquetRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Racquet[] Returns an array of Racquet objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Racquet
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+    * @return Racquet[] Returns an array of Racquet objects
+    */
+    public function getRacquetPaginator(int $offset){
+        $query = $this->createQueryBuilder('r')
+            ->orderBy('r.brand', 'ASC')
+            ->setMaxResults(self::PAGINATOR_PER_PAGE)
+            ->setFirstResult($offset)
+            ->getQuery();
+            
+        return new Paginator($query);
+    }
 }

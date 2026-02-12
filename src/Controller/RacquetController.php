@@ -23,10 +23,15 @@ class RacquetController extends AbstractController
     /**
     * @Route("/racquets", name="racquets")
     */
-    public function racquets(RacquetRepository $racquetRepository): Response
+    public function racquets(Request $request, RacquetRepository $racquetRepository): Response
     {
+        $offset = max(0, $request->query->getInt('offset', 0));
+        $paginator = $racquetRepository->getRacquetPaginator($offset);
+
         return $this->render('racquet/index.html.twig', [
-            'racquets' => $racquetRepository->findAll(),
+            'racquets' => $paginator,
+            'previous' => $offset - RacquetRepository::PAGINATOR_PER_PAGE,
+            'next' => min(count($paginator), $offset + RacquetRepository::PAGINATOR_PER_PAGE)
         ]);
     }
 
