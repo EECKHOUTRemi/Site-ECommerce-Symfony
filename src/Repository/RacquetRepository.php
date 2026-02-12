@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Racquet;
+use App\Model\FilterData;
 use App\Model\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -46,8 +47,8 @@ class RacquetRepository extends ServiceEntityRepository
     }
 
     /**
-    * @return Racquet[] Returns an array of Racquet objects
-    */
+     * @return Racquet[] Returns an array of Racquet objects
+     */
     public function getRacquetPaginator(int $offset, ?QueryBuilder $racquets = null)
     {
         $queryBuilder = ($racquets ?: $this->createQueryBuilder('r'));
@@ -59,16 +60,45 @@ class RacquetRepository extends ServiceEntityRepository
         return new Paginator($queryBuilder->getQuery());
     }
 
-    public function findBySearch(SearchData $searchData){
+    public function findBrandAndModelBySearch(SearchData $searchData)
+    {
         $racquets = $this->createQueryBuilder('r');
 
         if (!empty($searchData->query)) {
-            $racquets->andWhere('r.brand LIKE :query')
+            $racquets
+                ->andWhere('r.brand LIKE :query')
+                ->orWhere('r.model LIKE :query')
                 ->setParameter('query', "%{$searchData->query}%");
         }
 
         $offset = max(0, ($searchData->page - 1) * self::PAGINATOR_PER_PAGE);
 
         return $this->getRacquetPaginator($offset, $racquets);
+    }
+
+    public function findSpecsBySearch(FilterData $filterData)
+    {
+        $racquets = $this->createQueryBuilder('r');
+
+        if (!empty($filterData->weight)) {
+            $racquets
+                ->andWhere('r.weight = :weight')
+                ->setParameter('weight', $filterData->query);
+        }
+
+        $offset = max(0, ($filterData->page - 1) * self::PAGINATOR_PER_PAGE);
+
+        return $this->getRacquetPaginator($offset, $racquets);
+    }
+
+    public function getAllUniquesWeights()
+    {
+        $racquets = $this->findAll();
+        $weights = [];
+        foreach ($racquets as $racquet) {
+            array_push($weights, $racquet->getWeight());
+        }
+
+        return array_unique($weights, SORT_REGULAR);
     }
 }
