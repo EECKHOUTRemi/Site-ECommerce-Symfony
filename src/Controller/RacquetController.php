@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
-use DateTime;
 use App\Entity\Racquet;
 use App\Form\AddToCartType;
+use App\Form\SearchType;
 use App\Manager\CartManager;
+use App\Model\SearchData;
 use App\Repository\RacquetRepository;
+use DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 /**
@@ -28,10 +30,20 @@ class RacquetController extends AbstractController
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $racquetRepository->getRacquetPaginator($offset);
 
+        $searchData = new SearchData();
+        $form = $this->createForm(SearchType::class, $searchData);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $searchData->page = $request->query->getInt('page', 1);
+            $paginator = $racquetRepository->findBySearch($searchData);
+        }
+
         return $this->render('racquet/index.html.twig', [
             'racquets' => $paginator,
             'previous' => $offset - RacquetRepository::PAGINATOR_PER_PAGE,
-            'next' => min(count($paginator), $offset + RacquetRepository::PAGINATOR_PER_PAGE)
+            'next' => min(count($paginator), $offset + RacquetRepository::PAGINATOR_PER_PAGE),
+            'form' => $form->createView()
         ]);
     }
 

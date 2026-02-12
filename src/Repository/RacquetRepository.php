@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Racquet;
+use App\Model\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -46,13 +48,27 @@ class RacquetRepository extends ServiceEntityRepository
     /**
     * @return Racquet[] Returns an array of Racquet objects
     */
-    public function getRacquetPaginator(int $offset){
-        $query = $this->createQueryBuilder('r')
-            ->orderBy('r.id', 'ASC')
+    public function getRacquetPaginator(int $offset, ?QueryBuilder $racquets = null)
+    {
+        $queryBuilder = ($racquets ?: $this->createQueryBuilder('r'));
+
+        $queryBuilder->orderBy('r.id', 'ASC')
             ->setMaxResults(self::PAGINATOR_PER_PAGE)
-            ->setFirstResult($offset)
-            ->getQuery();
-            
-        return new Paginator($query);
+            ->setFirstResult($offset);
+
+        return new Paginator($queryBuilder->getQuery());
+    }
+
+    public function findBySearch(SearchData $searchData){
+        $racquets = $this->createQueryBuilder('r');
+
+        if (!empty($searchData->query)) {
+            $racquets->andWhere('r.brand LIKE :query')
+                ->setParameter('query', "%{$searchData->query}%");
+        }
+
+        $offset = max(0, ($searchData->page - 1) * self::PAGINATOR_PER_PAGE);
+
+        return $this->getRacquetPaginator($offset, $racquets);
     }
 }

@@ -1,0 +1,8 @@
+{{ form_start(form, {'attr': {'class': 'd-flex', 'role': 'search'}}) }}
+<div class="input-group">
+    {{ form_widget(form.query, {'attr': {'class': 'form-control', 'placeholder': 'Search racquets...', 'aria-label': 'Search'}}) }}
+    <button type="submit" class="btn btn-outline-light">
+        <i class="bi bi-search">Search</i>
+    </button>
+</div>
+{{ form_end(form) }}

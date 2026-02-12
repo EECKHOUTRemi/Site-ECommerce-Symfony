@@ -6,8 +6,9 @@
 {% block body %}
 	<div class="container mt-5">
 		<div class="card shadow-sm mb-4">
-			<div class="card-header bg-primary text-white">
+			<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
 				<h1 class="h3 mb-0">Our Racquet Collection</h1>
+				{{ include("base/_search_data.html.twig", { 'form' : form }) }}
 			</div>
 		</div>
 
