@@ -4,14 +4,22 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <h1 class="h3 mb-0">Our Racquet Collection</h1>
-                {{ include("base/_search_data.html.twig", { 'form' : searchForm }) }}
-                {{ include("base/_filter_data.html.twig", { 'form' : filterForm }) }}
-            </div>
-        </div>
+	<div class="container mt-5">
+		<div class="card shadow-sm mb-4">
+			<div class="card-header bg-primary text-white">
+				<div class="row align-items-center mb-3">
+					<div class="col-md-6">
+						<h1 class="h3 mb-0">Our Racquet Collection</h1>
+					</div>
+					<div class="col-md-6">
+						{{ include("base/_search_data.html.twig", { 'form' : searchForm }) }}
+					</div>
+				</div>
+				<div class="border-top pt-3 mt-2">
+					{{ include("base/_filter_data.html.twig", { 'form' : filterForm }) }}
+				</div>
+			</div>
+		</div>
 
 		<div class="row">
 			{% for racquet in racquets %}
@@ -46,14 +54,14 @@
 
 							<div class="mb-3">
 								<span class="badge
-                                    {% if racquet.quantity >= 30 %}
-                                        bg-success
-                                    {% elseif racquet.quantity >= 10 %}
-                                        bg-warning
-                                    {% else %}
-                                        bg-danger
-                                    {% endif %}
-                                ">{{ racquet.quantity }}
+									                                    {% if racquet.quantity >= 30 %}
+									                                        bg-success
+									                                    {% elseif racquet.quantity >= 10 %}
+									                                        bg-warning
+									                                    {% else %}
+									                                        bg-danger
+									                                    {% endif %}
+									                                ">{{ racquet.quantity }}
 									in stock</span>
 							</div>
 						</div>
@@ -79,24 +87,30 @@
 				{% if previous >= 0 %}
 					<li class="page-item">
 						<a class="page-link" href="{{ path('racquets', { offset: previous }) }}">
-							<span aria-hidden="true">&laquo;</span> Previous
+							<span aria-hidden="true">&laquo;</span>
+							Previous
 						</a>
 					</li>
 				{% else %}
 					<li class="page-item disabled">
-						<span class="page-link"><span aria-hidden="true">&laquo;</span> Previous</span>
+						<span class="page-link">
+							<span aria-hidden="true">&laquo;</span>
+							Previous</span>
 					</li>
 				{% endif %}
 
 				{% if next < racquets|length %}
 					<li class="page-item">
 						<a class="page-link" href="{{ path('racquets', { offset: next }) }}">
-							Next <span aria-hidden="true">&raquo;</span>
+							Next
+							<span aria-hidden="true">&raquo;</span>
 						</a>
 					</li>
 				{% else %}
 					<li class="page-item disabled">
-						<span class="page-link">Next <span aria-hidden="true">&raquo;</span></span>
+						<span class="page-link">Next
+							<span aria-hidden="true">&raquo;</span>
+						</span>
 					</li>
 				{% endif %}
 			</ul>

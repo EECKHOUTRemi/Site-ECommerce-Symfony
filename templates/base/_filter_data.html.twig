@@ -1,9 +1,35 @@
 <!-- filepath: c:\wamp64\www\e-commerce-raquettes\templates\base\_filter_data.html.twig -->
-{{ form_start(form) }}
-<div class="input-group">
-    {{ form_widget(form.query) }}
-    <button type="submit" class="btn btn-outline-light">
-        <i class="bi bi-search"></i> Filter
-    </button>
+{{ form_start(form, {'attr': {'class': 'filter-form'}}) }}
+<div class="row g-2 align-items-end">
+	<div class="col-md-3 col-6">
+		<label class="form-label text-white small mb-1">
+			Weight
+		</label>
+		{{ form_widget(form.weight, {'attr': {'class': 'form-select form-select-sm'}}) }}
+	</div>
+	<div class="col-md-3 col-6">
+		<label class="form-label text-white small mb-1">
+			Head Size
+		</label>
+		{{ form_widget(form.head_size, {'attr': {'class': 'form-select form-select-sm'}}) }}
+	</div>
+	<div class="col-md-2 col-6">
+		<label class="form-label text-white small mb-1">
+			String Pattern
+		</label>
+		{{ form_widget(form.string_pattern, {'attr': {'class': 'form-select form-select-sm'}}) }}
+	</div>
+	<div class="col-md-2 col-6">
+		<label class="form-label text-white small mb-1">
+			Grip Size
+		</label>
+		{{ form_widget(form.grip_size, {'attr': {'class': 'form-select form-select-sm'}}) }}
+	</div>
+	<div class="col-md-2 col-12">
+		<div class="d-flex gap-1">
+            {{ form_widget(form.reset) }}
+            {{ form_widget(form.submit) }}
+		</div>
+	</div>
 </div>
 {{ form_end(form) }}

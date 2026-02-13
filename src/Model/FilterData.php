@@ -8,9 +8,15 @@ class FilterData
     /** @var int */
     public $page = 1;
 
-    /** @var string */
-    public $spec = '';
+    /** @var int */
+    public $weight;
+
+    /** @var int */
+    public $head_size;
 
     /** @var string */
-    public $query = '';
+    public $string_pattern = '';
+
+    /** @var int */
+    public $grip_size;
 }

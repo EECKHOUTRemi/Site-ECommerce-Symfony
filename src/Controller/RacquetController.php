@@ -10,6 +10,7 @@ use App\Manager\CartManager;
 use App\Model\FilterData;
 use App\Model\SearchData;
 use App\Repository\RacquetRepository;
+use App\Service\RacquetChoiceService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +27,7 @@ class RacquetController extends AbstractController
     /**
      * @Route("/racquets", name="racquets")
      */
-    public function racquets(Request $request, RacquetRepository $racquetRepository): Response
+    public function racquets(Request $request, RacquetRepository $racquetRepository, RacquetChoiceService $racquetChoiceService): Response
     {
         // Global searchbar
 
@@ -40,32 +41,38 @@ class RacquetController extends AbstractController
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $searchData->page = $request->query->getInt('page', 1);
-            $paginator = $racquetRepository->findBrandAndModelBySearch($searchData);
+            $paginator = $racquetRepository->findByBrandAndModel($searchData);
         }
 
         // Weight filter
 
         $allWeights = $racquetRepository->getAllUniquesWeights();
-        // Convert to associative array for ChoiceType: ['300g' => '300', '310g' => '310']
-        $weightChoices = array_combine(
-            array_map(function ($w) {
-                return $w . 'g';
-            }, $allWeights),
-            $allWeights
-        );
+        $weightChoices = $racquetChoiceService->arraySeter($allWeights, 'g');
+
+        $allHeadSizes = $racquetRepository->getAllUniquesHeadSizes();
+        $headSizeChoices = $racquetChoiceService->arraySeter($allHeadSizes, ' cm²');
+
+        $allStringPatterns = $racquetRepository->getAllUniquesStringPatterns();
+        $stringPatternChoices = $racquetChoiceService->arraySeter($allStringPatterns);
+
+        $allGripSizes = $racquetRepository->getAllUniquesGripSizes();
+        $gripSizeChoices = $racquetChoiceService->arraySeter($allGripSizes);
 
         $filterData = new FilterData();
-        $filterData->spec = "weight";
 
         $filterForm = $this->createForm(FilterType::class, $filterData, [
-            'weight_choices' => $weightChoices
+            'weight_choices' => $weightChoices,
+            'head_size_choices' => $headSizeChoices,
+            'string_pattern_choices' => $stringPatternChoices,
+            'grip_size_choices' => $gripSizeChoices
         ]);
 
         $filterForm->handleRequest($request);
 
         if ($filterForm->isSubmitted() && $filterForm->isValid()) {
-            $filterData->query = $request->query->getInt('query', 1);
-            $paginator = $racquetRepository->findSpecsBySearch($filterData);
+            $paginator = $racquetRepository->findBySpecs($filterData);
+
+            // dd($paginator);
         }
 
         return $this->render('racquet/index.html.twig', [
