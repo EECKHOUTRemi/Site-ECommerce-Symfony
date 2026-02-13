@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid py-4">
+		<div class="row mb-3">
+			<div class="col-md-6">
+				<h1 class="h3 mb-0">User Management</h1>
+			</div>
+			<div class="col-md-6 text-end">
+				<a href="{{ path('app_admin_user_new') }}" class="btn btn-primary">
+					<i class="bi bi-plus-circle"></i>
+					Create New User
+				</a>
+			</div>
+		</div>
+
+		<div class="card shadow-sm">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-hover table-striped align-middle">
+						<thead class="table-dark">
+							<tr>
+								<th>Id</th>
+								<th>Username</th>
+								<th>Roles</th>
+								<th>Lastname</th>
+								<th>Firstname</th>
+								<th>Phone</th>
+								<th>Email</th>
+								<th class="text-center">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for user in users %}
+								<tr>
+									<td>{{ user.id }}</td>
+									<td>
+										<strong>{{ user.username }}</strong>
+									</td>
+									<td>
+										{% for role in user.roles %}
+											<span class="badge bg-secondary">{{ role }}</span>
+										{% endfor %}
+									</td>
+									<td>{{ user.lastname }}</td>
+									<td>{{ user.firstname }}</td>
+									<td>{{ user.phone }}</td>
+									<td>{{ user.email }}</td>
+									<td class="text-center">
+										<div class="btn-group btn-group-sm" role="group">
+											<a href="{{ path('app_admin_user_show', {'id': user.id}) }}" class="btn btn-info" title="View">
+												<i class="bi bi-eye"></i>
+												Show
+											</a>
+											<a href="{{ path('app_admin_user_edit', {'id': user.id}) }}" class="btn btn-warning" title="Edit">
+												<i class="bi bi-pencil"></i>
+												Edit
+											</a>
+										</div>
+									</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="8" class="text-center text-muted py-4">
+										<i class="bi bi-inbox"></i>
+										No records found
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

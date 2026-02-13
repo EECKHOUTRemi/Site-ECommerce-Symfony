@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New User
+{% endblock %}
+
+{% block body %}
+	<div class="container py-4">
+		<div class="row mb-3">
+			<div class="col">
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item">
+							<a href="{{ path('app_admin_user_index') }}">Users</a>
+						</li>
+						<li class="breadcrumb-item active" aria-current="page">New User</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card shadow-sm">
+					<div class="card-header bg-success text-white">
+						<h4 class="mb-0">
+							<i class="bi bi-person-plus"></i>
+							Create New User</h4>
+					</div>
+					<div class="card-body">
+						{{ include('admin/admin_user/_form.html.twig') }}
+					</div>
+					<div class="card-footer bg-light">
+						<a href="{{ path('app_admin_user_index') }}" class="btn btn-outline-secondary">
+							<i class="bi bi-arrow-left"></i>
+							Back to list
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
