@@ -10,7 +10,6 @@ use App\Manager\CartManager;
 use App\Model\FilterData;
 use App\Model\SearchData;
 use App\Repository\RacquetRepository;
-use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,7 +64,7 @@ class RacquetController extends AbstractController
         $filterForm->handleRequest($request);
 
         if ($filterForm->isSubmitted() && $filterForm->isValid()) {
-            $filterData->query = $request->query->getInt('weight', 1);
+            $filterData->query = $request->query->getInt('query', 1);
             $paginator = $racquetRepository->findSpecsBySearch($filterData);
         }
 

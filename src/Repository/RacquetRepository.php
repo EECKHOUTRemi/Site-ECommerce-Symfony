@@ -49,9 +49,9 @@ class RacquetRepository extends ServiceEntityRepository
     /**
      * @return Racquet[] Returns an array of Racquet objects
      */
-    public function getRacquetPaginator(int $offset, ?QueryBuilder $racquets = null)
+    public function getRacquetPaginator(int $offset, ?QueryBuilder $racquetsQb = null)
     {
-        $queryBuilder = ($racquets ?: $this->createQueryBuilder('r'));
+        $queryBuilder = ($racquetsQb ?: $this->createQueryBuilder('r'));
 
         $queryBuilder->orderBy('r.id', 'ASC')
             ->setMaxResults(self::PAGINATOR_PER_PAGE)
@@ -80,7 +80,7 @@ class RacquetRepository extends ServiceEntityRepository
     {
         $racquets = $this->createQueryBuilder('r');
 
-        if (!empty($filterData->weight)) {
+        if (!empty($filterData->query)) {
             $racquets
                 ->andWhere('r.weight = :weight')
                 ->setParameter('weight', $filterData->query);
