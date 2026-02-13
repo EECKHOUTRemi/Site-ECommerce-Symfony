@@ -18,6 +18,7 @@ class UserType extends AbstractType
                 'choices' => [
                     'User' => 'ROLE_USER',
                     'Admin' => 'ROLE_ADMIN',
+                    // TODO : getRoles et les afficher dynamiquement + 3e choice (TextType) -> flush dans bdd au submit du form
                 ],
                 'multiple' => true,
                 'expanded' => true,
