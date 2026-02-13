@@ -61,22 +61,23 @@ class RacquetController extends AbstractController
 
         $filterForm->handleRequest($request);
 
-        // Calculate page from offset
         $page = ($offset / RacquetRepository::PAGINATOR_PER_PAGE) + 1;
         $filterData->page = (int) $page;
+        $searchData->page = (int) $page;
 
-        // Check if any filters are active (either from form submission or URL parameters)
+        $hasSearch = $searchData->query !== null;
+
         $hasFilters = $filterData->weight !== null
             || $filterData->head_size !== null
             || $filterData->string_pattern !== null
             || $filterData->grip_size !== null;
 
-        // Apply search or filters
-        if ($searchForm->isSubmitted() && $searchForm->isValid() && !empty($searchData->query)) {
-            $searchData->page = (int) $page;
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $paginator = $racquetRepository->findByBrandAndModel($searchData);
         } elseif ($hasFilters) {
             $paginator = $racquetRepository->findBySpecs($filterData);
+        } elseif ($hasSearch) {
+            $paginator = $racquetRepository->findByBrandAndModel($searchData);
         } else {
             $paginator = $racquetRepository->getRacquetPaginator($offset);
         }
@@ -85,13 +86,13 @@ class RacquetController extends AbstractController
             'racquets' => $paginator,
             'previous' => $offset - RacquetRepository::PAGINATOR_PER_PAGE,
             'next' => $offset + RacquetRepository::PAGINATOR_PER_PAGE,
-            'totalItems' => count($paginator),
             'searchForm' => $searchForm->createView(),
             'filterForm' => $filterForm->createView(),
             'weight' => $filterData->weight,
             'head_size' => $filterData->head_size,
             'string_pattern' => $filterData->string_pattern,
             'grip_size' => $filterData->grip_size,
+            'query' => $searchData->query
         ]);
     }
 

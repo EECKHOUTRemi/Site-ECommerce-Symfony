@@ -12,7 +12,6 @@ class SearchType extends AbstractType{
 
     public function buildForm(FormBuilderInterface $builder, array $options){
         $builder->add('query', TextType::class, [
-            'required' => false,
             'attr' => [
                 'placeholder' => 'Search'
 
@@ -27,5 +26,10 @@ class SearchType extends AbstractType{
             'method' => 'GET',
             'csrf_protection' => false
         ]);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return '';
     }
 }

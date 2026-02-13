@@ -8,6 +8,6 @@ class SearchData{
     public $page = 1;
 
     /** @var string */
-    public $query = '';
+    public $query;
 
 }

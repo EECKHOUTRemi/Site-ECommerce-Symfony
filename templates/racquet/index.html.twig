@@ -86,7 +86,7 @@
 			<ul class="pagination justify-content-center">
 				{% if previous >= 0 %}
 					<li class="page-item">
-						<a class="page-link" href={{ path('racquets', { offset: previous, weight: weight, head_size: head_size, string_pattern: string_pattern, grip_size:grip_size } ) }}>
+						<a class="page-link" href={{ path('racquets', { offset: previous, query: query, weight: weight, head_size: head_size, string_pattern: string_pattern, grip_size:grip_size } ) }}>
 							<span aria-hidden="true">&laquo;</span>
 							Previous
 						</a>
@@ -99,9 +99,9 @@
 					</li>
 				{% endif %}
 
-				{% if next < totalItems %}
+				{% if next < racquets|length %}
 					<li class="page-item">
-						<a class="page-link" href={{ path('racquets', { offset: next, weight: weight, head_size: head_size, string_pattern: string_pattern, grip_size:grip_size } ) }}>
+						<a class="page-link" href={{ path('racquets', { offset: next, query: query, weight: weight, head_size: head_size, string_pattern: string_pattern, grip_size:grip_size } ) }}>
 							Next
 							<span aria-hidden="true">&raquo;</span>
 						</a>

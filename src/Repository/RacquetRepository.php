@@ -64,7 +64,7 @@ class RacquetRepository extends ServiceEntityRepository
     {
         $racquets = $this->createQueryBuilder('r');
 
-        if (!empty($searchData->query)) {
+        if ($searchData->query !== null) {
             $racquets
                 ->andWhere('r.brand LIKE :query')
                 ->orWhere('r.model LIKE :query')
@@ -80,25 +80,25 @@ class RacquetRepository extends ServiceEntityRepository
     {
         $racquets = $this->createQueryBuilder('r');
 
-        if ($filterData->weight != null) {
+        if ($filterData->weight !== null) {
             $racquets
                 ->andWhere('r.weight = :weight')
                 ->setParameter('weight', $filterData->weight);
         }
 
-        if ($filterData->head_size != null) {
+        if ($filterData->head_size !== null) {
             $racquets
                 ->andWhere('r.head_size = :head_size')
                 ->setParameter('head_size', $filterData->head_size);
         }
 
-        if ($filterData->string_pattern != null) {
+        if ($filterData->string_pattern !== null) {
             $racquets
                 ->andWhere('r.string_pattern = :string_pattern')
                 ->setParameter('string_pattern', $filterData->string_pattern);
         }
 
-        if ($filterData->grip_size != null) {
+        if ($filterData->grip_size !== null) {
             $racquets
                 ->andWhere('r.grip_size = :grip_size')
                 ->setParameter('grip_size', $filterData->grip_size);
