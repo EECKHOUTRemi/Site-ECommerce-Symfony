@@ -40,10 +40,6 @@ class FilterType extends AbstractType
                 'label' => 'Apply',
                 'attr' => ['class' => 'btn btn-light btn-sm flex-fill']
             ])
-            ->add('reset', ResetType::class, [
-                'label' => 'Clear filters',
-                'attr' => ['class' => 'btn btn-outline-light btn-sm flex-fill']
-            ])
         ;
     }
 

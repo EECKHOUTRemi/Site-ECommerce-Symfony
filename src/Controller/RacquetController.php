@@ -71,8 +71,6 @@ class RacquetController extends AbstractController
 
         if ($filterForm->isSubmitted() && $filterForm->isValid()) {
             $paginator = $racquetRepository->findBySpecs($filterData);
-
-            // dd($paginator);
         }
 
         return $this->render('racquet/index.html.twig', [

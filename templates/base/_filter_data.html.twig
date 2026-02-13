@@ -27,7 +27,9 @@
 	</div>
 	<div class="col-md-2 col-12">
 		<div class="d-flex gap-1">
-            {{ form_widget(form.reset) }}
+            <a href="{{ path('racquets') }}" class="btn btn-outline-light btn-sm flex-fill">
+                Clear filters
+            </a>
             {{ form_widget(form.submit) }}
 		</div>
 	</div>
