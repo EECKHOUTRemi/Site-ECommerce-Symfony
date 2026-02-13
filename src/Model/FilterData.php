@@ -15,7 +15,7 @@ class FilterData
     public $head_size;
 
     /** @var string */
-    public $string_pattern = '';
+    public $string_pattern;
 
     /** @var int */
     public $grip_size;

@@ -29,23 +29,14 @@ class RacquetController extends AbstractController
      */
     public function racquets(Request $request, RacquetRepository $racquetRepository, RacquetChoiceService $racquetChoiceService): Response
     {
-        // Global searchbar
-
         $offset = max(0, $request->query->getInt('offset', 0));
-        $paginator = $racquetRepository->getRacquetPaginator($offset);
 
+        // Global searchbar
         $searchData = new SearchData();
-
         $searchForm = $this->createForm(SearchType::class, $searchData);
         $searchForm->handleRequest($request);
 
-        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
-            $searchData->page = $request->query->getInt('page', 1);
-            $paginator = $racquetRepository->findByBrandAndModel($searchData);
-        }
-
-        // Weight filter
-
+        // Get all unique values for filter choices
         $allWeights = $racquetRepository->getAllUniquesWeights();
         $weightChoices = $racquetChoiceService->arraySeter($allWeights, 'g');
 
@@ -58,6 +49,7 @@ class RacquetController extends AbstractController
         $allGripSizes = $racquetRepository->getAllUniquesGripSizes();
         $gripSizeChoices = $racquetChoiceService->arraySeter($allGripSizes);
 
+        // Initialize filter data
         $filterData = new FilterData();
 
         $filterForm = $this->createForm(FilterType::class, $filterData, [
@@ -69,16 +61,37 @@ class RacquetController extends AbstractController
 
         $filterForm->handleRequest($request);
 
-        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+        // Calculate page from offset
+        $page = ($offset / RacquetRepository::PAGINATOR_PER_PAGE) + 1;
+        $filterData->page = (int) $page;
+
+        // Check if any filters are active (either from form submission or URL parameters)
+        $hasFilters = $filterData->weight !== null
+            || $filterData->head_size !== null
+            || $filterData->string_pattern !== null
+            || $filterData->grip_size !== null;
+
+        // Apply search or filters
+        if ($searchForm->isSubmitted() && $searchForm->isValid() && !empty($searchData->query)) {
+            $searchData->page = (int) $page;
+            $paginator = $racquetRepository->findByBrandAndModel($searchData);
+        } elseif ($hasFilters) {
             $paginator = $racquetRepository->findBySpecs($filterData);
+        } else {
+            $paginator = $racquetRepository->getRacquetPaginator($offset);
         }
 
         return $this->render('racquet/index.html.twig', [
             'racquets' => $paginator,
             'previous' => $offset - RacquetRepository::PAGINATOR_PER_PAGE,
-            'next' => min(count($paginator), $offset + RacquetRepository::PAGINATOR_PER_PAGE),
+            'next' => $offset + RacquetRepository::PAGINATOR_PER_PAGE,
+            'totalItems' => count($paginator),
             'searchForm' => $searchForm->createView(),
             'filterForm' => $filterForm->createView(),
+            'weight' => $filterData->weight,
+            'head_size' => $filterData->head_size,
+            'string_pattern' => $filterData->string_pattern,
+            'grip_size' => $filterData->grip_size,
         ]);
     }
 

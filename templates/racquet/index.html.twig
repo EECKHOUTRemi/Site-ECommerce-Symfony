@@ -54,14 +54,14 @@
 
 							<div class="mb-3">
 								<span class="badge
-									                                    {% if racquet.quantity >= 30 %}
-									                                        bg-success
-									                                    {% elseif racquet.quantity >= 10 %}
-									                                        bg-warning
-									                                    {% else %}
-									                                        bg-danger
-									                                    {% endif %}
-									                                ">{{ racquet.quantity }}
+																		                                    {% if racquet.quantity >= 30 %}
+																		                                        bg-success
+																		                                    {% elseif racquet.quantity >= 10 %}
+																		                                        bg-warning
+																		                                    {% else %}
+																		                                        bg-danger
+																		                                    {% endif %}
+																		                                ">{{ racquet.quantity }}
 									in stock</span>
 							</div>
 						</div>
@@ -86,7 +86,7 @@
 			<ul class="pagination justify-content-center">
 				{% if previous >= 0 %}
 					<li class="page-item">
-						<a class="page-link" href="{{ path('racquets', { offset: previous }) }}">
+						<a class="page-link" href={{ path('racquets', { offset: previous, weight: weight, head_size: head_size, string_pattern: string_pattern, grip_size:grip_size } ) }}>
 							<span aria-hidden="true">&laquo;</span>
 							Previous
 						</a>
@@ -99,9 +99,9 @@
 					</li>
 				{% endif %}
 
-				{% if next < racquets|length %}
+				{% if next < totalItems %}
 					<li class="page-item">
-						<a class="page-link" href="{{ path('racquets', { offset: next }) }}">
+						<a class="page-link" href={{ path('racquets', { offset: next, weight: weight, head_size: head_size, string_pattern: string_pattern, grip_size:grip_size } ) }}>
 							Next
 							<span aria-hidden="true">&raquo;</span>
 						</a>
