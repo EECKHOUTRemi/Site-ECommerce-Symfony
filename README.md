@@ -1,6 +1,6 @@
 # E-Commerce
 
-Remake of [this project](https://github.com/EECKHOUTRemi/Site-ECommerce) with Symfony.
+Remake of [Site-ECommerce](https://github.com/EECKHOUTRemi/Site-ECommerce) with Symfony.
 
 ## Requirements
 
