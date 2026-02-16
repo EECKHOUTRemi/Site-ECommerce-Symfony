@@ -1,8 +1,5 @@
 $(document).ready(function () {
     $('#users').DataTable({
-        layout: {
-            top1: 'searchBuilder'
-        },
         pageLength: 10,
         ordering: true,
         searching: true,
