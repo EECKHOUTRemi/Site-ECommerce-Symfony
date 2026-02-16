@@ -41,12 +41,12 @@ class AccessDeniedListener implements EventSubscriberInterface
         // ... perform some action (e.g. logging)
 
         // optionally set the custom response
-        if (!$this->authorizationChecker->isGranted("ROLE_USER")) {
-            $event->setResponse(new RedirectResponse($this->urlGenerator->generate('app_login')));
+        if ($this->authorizationChecker->isGranted("ROLE_USER")) {
+            $event->setResponse(new RedirectResponse($this->urlGenerator->generate('app_home')));
         }
-        $event->setResponse(new RedirectResponse($this->urlGenerator->generate('app_home')));
+        $event->setResponse(new RedirectResponse($this->urlGenerator->generate('app_login')));
 
         // or stop propagation (prevents the next exception listeners from being called)
-        //$event->stopPropagation();
+        // $event->stopPropagation();
     }
 }
