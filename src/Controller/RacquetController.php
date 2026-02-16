@@ -66,19 +66,19 @@ class RacquetController extends AbstractController
         $searchData->page = (int) $page;
 
         $hasSearch = $searchData->query !== null;
-
         $hasFilters = $filterData->weight !== null
             || $filterData->head_size !== null
             || $filterData->string_pattern !== null
             || $filterData->grip_size !== null;
 
-        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
-            $paginator = $racquetRepository->findByBrandAndModel($searchData);
+        if ($hasSearch) {
+            // Search only
+            $paginator = $racquetRepository->findWithSearch($searchData);
         } elseif ($hasFilters) {
-            $paginator = $racquetRepository->findBySpecs($filterData);
-        } elseif ($hasSearch) {
-            $paginator = $racquetRepository->findByBrandAndModel($searchData);
+            // Filter only
+            $paginator = $racquetRepository->findWithFilter($filterData);
         } else {
+            // No search or filters
             $paginator = $racquetRepository->getRacquetPaginator($offset);
         }
 
