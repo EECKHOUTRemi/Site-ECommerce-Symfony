@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Service\GlobalServices;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -19,9 +20,14 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+
+    /** @var GlobalServices */
+    private $globalServices;
+
+    public function __construct(ManagerRegistry $registry, GlobalServices $globalServices)
     {
         parent::__construct($registry, User::class);
+        $this->globalServices = $globalServices;
     }
 
     public function add(User $entity, bool $flush = false): void
@@ -56,28 +62,38 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->add($user, true);
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getUniqueRoles(): array
+    {
+        $users = $this->createQueryBuilder('u')
+            ->select('u.roles')
+            ->getQuery()
+            ->execute();
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $roles = [];
+
+        foreach ($users as $user) {
+            if ($user['roles']) {
+                foreach ($user as $role) {
+                    if (count($role) > 1) {
+                        foreach ($role as $i) {
+                            array_push($roles, $i);
+                        }
+                    } else {
+                        array_push($roles, $role[0]);
+                    }
+                }
+            }
+        }
+
+        if (!in_array("ROLE_USER", $roles)){
+            array_push($roles, "ROLE_USER");
+        }
+
+        foreach ($roles as $oldKey => $role) {
+            $newKey = substr($role, 5);
+            $roles= $this->globalServices->replaceKeys($oldKey, $newKey, $roles);        
+        }
+
+        return array_unique($roles);
+    }
 }

@@ -33,7 +33,10 @@ class AdminUserController extends AbstractController
     public function new(Request $request, UserRepository $userRepository): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $uniqueRoles = $userRepository->getUniqueRoles();
+        $form = $this->createForm(UserType::class, $user, [
+            'roles' => $uniqueRoles
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,7 +66,10 @@ class AdminUserController extends AbstractController
      */
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $uniqueRoles = $userRepository->getUniqueRoles();
+        $form = $this->createForm(UserType::class, $user, [
+            'roles' => $uniqueRoles
+        ]);
         $form->remove('password');
         $form->handleRequest($request);
 

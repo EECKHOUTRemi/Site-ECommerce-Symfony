@@ -15,11 +15,8 @@ class UserType extends AbstractType
         $builder
             ->add('username')
             ->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'User' => 'ROLE_USER',
-                    'Admin' => 'ROLE_ADMIN',
-                    // TODO : getRoles et les afficher dynamiquement + 3e choice (TextType) -> flush dans bdd au submit du form
-                ],
+                'choices' => $options['roles'],
+                // TODO : getRoles et les afficher dynamiquement + 3e choice (TextType) -> flush dans bdd au submit du form (cf. notes.txt)
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'Roles',
@@ -36,6 +33,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'roles' => [],
         ]);
     }
 }
