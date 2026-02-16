@@ -3,8 +3,8 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Form\ChoiceInputType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,7 +14,7 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('roles', ChoiceType::class, [
+            ->add('roles', ChoiceInputType::class, [
                 'choices' => $options['roles'],
                 // TODO : getRoles et les afficher dynamiquement + 3e choice (TextType) -> flush dans bdd au submit du form (cf. notes.txt)
                 'multiple' => true,

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\TestType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,7 @@ class TestController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('test/index.html.twig');
+        $form = $this->createForm(TestType::class);
+        return $this->render('test/index.html.twig', ['form' => $form->createView()]);
     }
 }
