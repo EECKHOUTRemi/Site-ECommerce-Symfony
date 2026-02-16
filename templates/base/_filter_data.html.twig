@@ -13,24 +13,32 @@
 		</label>
 		{{ form_widget(form.head_size, {'attr': {'class': 'form-select form-select-sm'}}) }}
 	</div>
-	<div class="col-md-2 col-6">
+	<div class="col-md-3 col-6">
 		<label class="form-label text-white small mb-1">
 			String Pattern
 		</label>
 		{{ form_widget(form.string_pattern, {'attr': {'class': 'form-select form-select-sm'}}) }}
 	</div>
-	<div class="col-md-2 col-6">
+	<div class="col-md-3 col-6">
 		<label class="form-label text-white small mb-1">
 			Grip Size
 		</label>
 		{{ form_widget(form.grip_size, {'attr': {'class': 'form-select form-select-sm'}}) }}
 	</div>
-	<div class="col-md-2 col-12">
+</div>
+<div class="row g-2 align-items-end mt-2">
+	<div class="col-md-8 col-12">
+		<label class="form-label text-white small mb-1">
+			Search
+		</label>
+		{{ form_widget(form.query, {'attr': {'class': 'form-control form-control-sm'}}) }}
+	</div>
+	<div class="col-md-4 col-12">
 		<div class="d-flex gap-1">
-            <a href="{{ path('racquets') }}" class="btn btn-outline-light btn-sm flex-fill">
-                Clear filters
-            </a>
-            {{ form_widget(form.submit) }}
+			<a href="{{ path('racquets') }}" class="btn btn-outline-light btn-sm flex-fill">
+				Clear
+			</a>
+			{{ form_widget(form.submit) }}
 		</div>
 	</div>
 </div>

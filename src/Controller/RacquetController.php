@@ -7,7 +7,6 @@ use App\Form\AddToCartType;
 use App\Form\FilterType;
 use App\Form\SearchType;
 use App\Manager\CartManager;
-use App\Model\FilterData;
 use App\Model\SearchData;
 use App\Repository\RacquetRepository;
 use App\Service\RacquetChoiceService;
@@ -31,45 +30,30 @@ class RacquetController extends AbstractController
     {
         $offset = max(0, $request->query->getInt('offset', 0));
 
-        // Global searchbar
-        $searchData = new SearchData();
-        $searchForm = $this->createForm(SearchType::class, $searchData);
-        $searchForm->handleRequest($request);
-
-        // Get all unique values for filter choices
-
         $allStringPatterns = $racquetRepository->getAllUniquesStringPatterns();
         $stringPatternChoices = $racquetChoiceService->arraySeter($allStringPatterns);
 
         $allGripSizes = $racquetRepository->getAllUniquesGripSizes();
         $gripSizeChoices = $racquetChoiceService->arraySeter($allGripSizes);
-
-        // Initialize filter data
-        $filterData = new FilterData();
-
-        $filterForm = $this->createForm(FilterType::class, $filterData, [
+        
+        $searchData = new SearchData();
+        $searchForm = $this->createForm(SearchType::class, $searchData, [
             'string_pattern_choices' => $stringPatternChoices,
             'grip_size_choices' => $gripSizeChoices
         ]);
-
-        $filterForm->handleRequest($request);
+        $searchForm->handleRequest($request);
 
         $page = ($offset / RacquetRepository::PAGINATOR_PER_PAGE) + 1;
-        $filterData->page = (int) $page;
         $searchData->page = (int) $page;
 
         $hasSearch = $searchData->query !== null;
-        $hasFilters = $filterData->weight !== null
-            || $filterData->head_size !== null
-            || $filterData->string_pattern !== null
-            || $filterData->grip_size !== null;
+        $hasFilters = $searchData->weight !== null
+            || $searchData->head_size !== null
+            || $searchData->string_pattern !== null
+            || $searchData->grip_size !== null;
 
-        if ($hasSearch) {
-            // Search only
+        if ($hasSearch || $hasFilters) {
             $paginator = $racquetRepository->findWithSearch($searchData);
-        } elseif ($hasFilters) {
-            // Filter only
-            $paginator = $racquetRepository->findWithFilter($filterData);
         } else {
             // No search or filters
             $paginator = $racquetRepository->getRacquetPaginator($offset);
@@ -81,12 +65,11 @@ class RacquetController extends AbstractController
             'previous' => $offset - RacquetRepository::PAGINATOR_PER_PAGE,
             'next' => $offset + RacquetRepository::PAGINATOR_PER_PAGE,
             'searchForm' => $searchForm->createView(),
-            'filterForm' => $filterForm->createView(),
-            'weight' => $filterData->weight,
-            'head_size' => $filterData->head_size,
-            'string_pattern' => $filterData->string_pattern,
-            'grip_size' => $filterData->grip_size,
-            'query' => $searchData->query
+            'query' => $searchData->query,
+            'weight' => $searchData->weight,
+            'head_size' => $searchData->head_size,
+            'string_pattern' => $searchData->string_pattern,
+            'grip_size' => $searchData->grip_size,
         ]);
     }
 

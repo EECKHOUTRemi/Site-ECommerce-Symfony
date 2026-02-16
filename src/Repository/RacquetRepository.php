@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Racquet;
-use App\Model\FilterData;
 use App\Model\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -71,36 +70,27 @@ class RacquetRepository extends ServiceEntityRepository
                 ->setParameter('query', "%{$searchData->query}%");
         }
 
-        $offset = max(0, ($searchData->page - 1) * self::PAGINATOR_PER_PAGE);
-
-        return $this->getRacquetPaginator($offset, $racquets);
-    }
-
-    public function findWithFilter(FilterData $filterData)
-    {
-        $racquets = $this->createQueryBuilder('r');
-
-        if ($filterData->weight !== null) {
-            $this->applyWeightFilter($racquets, $filterData->weight);
+        if ($searchData->weight !== null) {
+            $this->applyWeightFilter($racquets, $searchData->weight);
         }
 
-        if ($filterData->head_size !== null) {
-            $this->applyHeadSizeFilter($racquets, $filterData->head_size);
+        if ($searchData->head_size !== null) {
+            $this->applyHeadSizeFilter($racquets, $searchData->head_size);
         }
 
-        if ($filterData->string_pattern !== null) {
+        if ($searchData->string_pattern !== null) {
             $racquets
                 ->andWhere('r.string_pattern = :string_pattern')
-                ->setParameter('string_pattern', $filterData->string_pattern);
+                ->setParameter('string_pattern', $searchData->string_pattern);
         }
 
-        if ($filterData->grip_size !== null) {
+        if ($searchData->grip_size !== null) {
             $racquets
                 ->andWhere('r.grip_size = :grip_size')
-                ->setParameter('grip_size', $filterData->grip_size);
+                ->setParameter('grip_size', $searchData->grip_size);
         }
 
-        $offset = max(0, ($filterData->page - 1) * self::PAGINATOR_PER_PAGE);
+        $offset = max(0, ($searchData->page - 1) * self::PAGINATOR_PER_PAGE);
 
         return $this->getRacquetPaginator($offset, $racquets);
     }
