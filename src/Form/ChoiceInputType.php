@@ -27,7 +27,6 @@ class ChoiceInputType extends AbstractType
                 [
                     'required' => false,
                     'choices'  => $options['choices'],
-                    'label' => 'Make your choice...',
                     'multiple' => $options['multiple'],
                     'expanded' => $options['expanded'],
                 ]
@@ -39,7 +38,7 @@ class ChoiceInputType extends AbstractType
                     'required' => false,
                     'label'    => false,
                     'attr'     => [
-                        'placeholder' => 'Other choice...',
+                        'placeholder' => 'ROLE_XXX',
                     ],
                 ]
             );
