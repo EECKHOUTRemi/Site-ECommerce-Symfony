@@ -16,12 +16,22 @@ class FilterType extends AbstractType
     {
         $builder
             ->add('weight', ChoiceType::class, [
-                'choices' => $options['weight_choices'],
+                'choices' => [
+                    '< 270g' => 1,
+                    '270 - 290g' => 2,
+                    '290 - 310g' => 3,
+                    ' > 310g' => 4
+                ],
                 'required' => false,
                 'placeholder' => 'Select weight',
             ])
             ->add('head_size', ChoiceType::class, [
-                'choices' => $options['head_size_choices'],
+                'choices' => [
+                    '< 630 cm²' => 1,
+                    '630 - 660 cm²' => 2,
+                    '660 - 690 cm²' => 3,
+                    ' > 690 cm²' => 4
+                    ],
                 'required' => false,
                 'placeholder' => 'Select head size',
             ])
@@ -48,8 +58,6 @@ class FilterType extends AbstractType
             'data_class' => FilterData::class,
             'method' => 'GET',
             'csrf_protection' => false,
-            'weight_choices' => [],
-            'head_size_choices' => [],
             'string_pattern_choices' => [],
             'grip_size_choices' => [],
         ]);

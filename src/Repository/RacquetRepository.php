@@ -60,7 +60,7 @@ class RacquetRepository extends ServiceEntityRepository
         return new Paginator($queryBuilder->getQuery());
     }
 
-    public function findByBrandAndModel(SearchData $searchData)
+    public function findWithSearch(SearchData $searchData)
     {
         $racquets = $this->createQueryBuilder('r');
 
@@ -76,20 +76,16 @@ class RacquetRepository extends ServiceEntityRepository
         return $this->getRacquetPaginator($offset, $racquets);
     }
 
-    public function findBySpecs(FilterData $filterData)
+    public function findWithFilter(FilterData $filterData)
     {
         $racquets = $this->createQueryBuilder('r');
 
         if ($filterData->weight !== null) {
-            $racquets
-                ->andWhere('r.weight = :weight')
-                ->setParameter('weight', $filterData->weight);
+            $this->applyWeightFilter($racquets, $filterData->weight);
         }
 
         if ($filterData->head_size !== null) {
-            $racquets
-                ->andWhere('r.head_size = :head_size')
-                ->setParameter('head_size', $filterData->head_size);
+            $this->applyHeadSizeFilter($racquets, $filterData->head_size);
         }
 
         if ($filterData->string_pattern !== null) {
@@ -109,33 +105,76 @@ class RacquetRepository extends ServiceEntityRepository
         return $this->getRacquetPaginator($offset, $racquets);
     }
 
-    private function handleArray(array $array): array {
+    private function applyWeightFilter($racquets, int $data)
+    {
+        switch ($data) {
+            case 1:
+                $min = 160;
+                $max = 270;
+                break;
+
+            case 2:
+                $min = 270;
+                $max = 290;
+                break;
+
+            case 3:
+                $min = 290;
+                $max = 310;
+                break;
+
+            case 4:
+                $min = 310;
+                $max = 350;
+                break;
+        }
+
+        $racquets->andWhere('r.weight >= :weight_min')
+            ->andWhere('r.weight <= :weight_max')
+            ->setParameter('weight_min', $min)
+            ->setParameter('weight_max', $max);
+
+        return $racquets;
+    }
+
+    private function applyHeadSizeFilter($racquets, int $data)
+    {
+        switch ($data) {
+            case 1:
+                $min = 600;
+                $max = 630;
+                break;
+
+            case 2:
+                $min = 630;
+                $max = 660;
+                break;
+
+            case 3:
+                $min = 660;
+                $max = 690;
+                break;
+
+            case 4:
+                $min = 690;
+                $max = 740;
+                break;
+        }
+
+        $racquets->andWhere('r.head_size >= :head_size_min')
+            ->andWhere('r.head_size <= :head_size_max')
+            ->setParameter('head_size_min', $min)
+            ->setParameter('head_size_max', $max);
+
+        return $racquets;
+    }
+
+    private function handleArray(array $array): array
+    {
         array_unique($array, SORT_REGULAR);
         sort($array, SORT_REGULAR);
 
         return $array;
-    }
-
-    public function getAllUniquesWeights()
-    {
-        $racquets = $this->findAll();
-        $weights = [];
-        foreach ($racquets as $racquet) {
-            array_push($weights, $racquet->getWeight());
-        }
-
-        return $this->handleArray($weights);
-    }
-
-    public function getAllUniquesHeadSizes()
-    {
-        $racquets = $this->findAll();
-        $headSizes = [];
-        foreach ($racquets as $racquet) {
-            array_push($headSizes, $racquet->getHeadSize());
-        }
-
-        return $this->handleArray($headSizes);
     }
 
     public function getAllUniquesGripSizes()

@@ -37,11 +37,6 @@ class RacquetController extends AbstractController
         $searchForm->handleRequest($request);
 
         // Get all unique values for filter choices
-        $allWeights = $racquetRepository->getAllUniquesWeights();
-        $weightChoices = $racquetChoiceService->arraySeter($allWeights, 'g');
-
-        $allHeadSizes = $racquetRepository->getAllUniquesHeadSizes();
-        $headSizeChoices = $racquetChoiceService->arraySeter($allHeadSizes, ' cm²');
 
         $allStringPatterns = $racquetRepository->getAllUniquesStringPatterns();
         $stringPatternChoices = $racquetChoiceService->arraySeter($allStringPatterns);
@@ -53,8 +48,6 @@ class RacquetController extends AbstractController
         $filterData = new FilterData();
 
         $filterForm = $this->createForm(FilterType::class, $filterData, [
-            'weight_choices' => $weightChoices,
-            'head_size_choices' => $headSizeChoices,
             'string_pattern_choices' => $stringPatternChoices,
             'grip_size_choices' => $gripSizeChoices
         ]);
@@ -84,6 +77,7 @@ class RacquetController extends AbstractController
 
         return $this->render('racquet/index.html.twig', [
             'racquets' => $paginator,
+            'count' => count($paginator),
             'previous' => $offset - RacquetRepository::PAGINATOR_PER_PAGE,
             'next' => $offset + RacquetRepository::PAGINATOR_PER_PAGE,
             'searchForm' => $searchForm->createView(),
