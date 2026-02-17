@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Test;
 
 use App\Form\TestType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -12,7 +12,7 @@ class TestController extends AbstractController
 {
     /**
      * @Route("/test", name="app_test")
-     * IsGranted("ROLE_ADMIN")
+     * IsGranted("ROLE_DEVELOPER")
      */
     public function index(): Response
     {

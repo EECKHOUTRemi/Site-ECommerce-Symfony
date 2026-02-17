@@ -59,15 +59,15 @@
 
 							<div class="mb-3">
 								<span class="badge
-																		{% if racquet.quantity >= 30 %}
-																			bg-success
-																		{% elseif racquet.quantity >= 10 %}
-																			bg-warning
-																		{% else %}
-																			bg-danger
-																		{% endif %}
-																	">{{ racquet.quantity }}
-									in stock</span>
+									{% if racquet.quantity >= 30 %}
+										bg-success
+									{% elseif racquet.quantity >= 10 %}
+										bg-warning
+									{% else %}
+										bg-danger
+									{% endif %}
+								">{{ racquet.quantity }}
+								in stock</span>
 							</div>
 						</div>
 						<div class="card-footer bg-transparent">
