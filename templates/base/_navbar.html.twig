@@ -30,7 +30,7 @@
 							Logout
 						</a>
 					</li>
-					{% if is_granted('ROLE_ADMIN') %}
+					{% if is_granted('ROLE_RACQUET_ADMIN') or is_granted('ROLE_USER_ADMIN') or is_granted('ROLE_ORDER_ADMIN')  %}
 					<li class="nav-item">
 						<a class="nav-link text-warning" href="{{ path('app_admin_index') }}">
 							<i class="bi bi-box-arrow-right"></i>

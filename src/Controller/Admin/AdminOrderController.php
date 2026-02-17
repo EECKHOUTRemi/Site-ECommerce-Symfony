@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/admin/order", name="app_admin_orders_")
- * @IsGranted("ROLE_ADMIN")
+ * @IsGranted("ROLE_ORDER_ADMIN")
  */
 class AdminOrderController extends AbstractController
 {

@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/admin/racquet", name="app_admin_racquet_")
- * @IsGranted("ROLE_ADMIN")
+ * @IsGranted("ROLE_RACQUET_ADMIN")
  */
 class AdminRacquetController extends AbstractController
 {
