@@ -22,4 +22,7 @@ class SearchData{
     /** @var int */
     public $grip_size;
 
+    /** @var int */
+    public $quantity;
+
 }

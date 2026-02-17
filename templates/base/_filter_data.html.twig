@@ -1,29 +1,35 @@
 <!-- filepath: c:\wamp64\www\e-commerce-raquettes\templates\base\_filter_data.html.twig -->
 {{ form_start(form, {'attr': {'class': 'filter-form'}}) }}
 <div class="row g-2 align-items-end">
-	<div class="col-md-3 col-6">
+	<div class="col-md col-6">
 		<label class="form-label text-white small mb-1">
 			Weight
 		</label>
 		{{ form_widget(form.weight, {'attr': {'class': 'form-select form-select-sm'}}) }}
 	</div>
-	<div class="col-md-3 col-6">
+	<div class="col-md col-6">
 		<label class="form-label text-white small mb-1">
 			Head Size
 		</label>
 		{{ form_widget(form.head_size, {'attr': {'class': 'form-select form-select-sm'}}) }}
 	</div>
-	<div class="col-md-3 col-6">
+	<div class="col-md col-6">
 		<label class="form-label text-white small mb-1">
 			String Pattern
 		</label>
 		{{ form_widget(form.string_pattern, {'attr': {'class': 'form-select form-select-sm'}}) }}
 	</div>
-	<div class="col-md-3 col-6">
+	<div class="col-md col-6">
 		<label class="form-label text-white small mb-1">
 			Grip Size
 		</label>
 		{{ form_widget(form.grip_size, {'attr': {'class': 'form-select form-select-sm'}}) }}
+	</div>
+	<div class="col-md col-6">
+		<label class="form-label text-white small mb-1">
+			Quantity
+		</label>
+		{{ form_widget(form.quantity, {'attr': {'class': 'form-select form-select-sm'}}) }}
 	</div>
 </div>
 <div class="row g-2 align-items-end mt-2">

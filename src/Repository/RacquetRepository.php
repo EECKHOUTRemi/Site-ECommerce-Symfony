@@ -78,6 +78,10 @@ class RacquetRepository extends ServiceEntityRepository
             $this->applyHeadSizeFilter($racquets, $searchData->head_size);
         }
 
+        if ($searchData->quantity !== null) {
+            $this->applyStockFilter($racquets, $searchData->quantity);
+        }
+
         if ($searchData->string_pattern !== null) {
             $racquets
                 ->andWhere('r.string_pattern = :string_pattern')
@@ -155,6 +159,41 @@ class RacquetRepository extends ServiceEntityRepository
             ->andWhere('r.head_size <= :head_size_max')
             ->setParameter('head_size_min', $min)
             ->setParameter('head_size_max', $max);
+
+        return $racquets;
+    }
+
+    private function applyStockFilter($racquets, int $data)
+    {
+        switch ($data) {
+            case 1:
+                $min = 0;
+                $max = 10;
+                break;
+
+            case 2:
+                $min = 10;
+                $max = 30;
+                break;
+
+            case 3:
+                $min = 30;
+                $max = 60;
+                break;
+
+            case 4:
+                $min = 60;
+                $max = null;
+                break;
+        }
+
+        $racquets->andWhere('r.quantity >= :quantity_min')
+            ->setParameter('quantity_min', $min);
+
+        if ($max) {
+            $racquets->andWhere('r.quantity <= :quantity_max')
+                ->setParameter('quantity_max', $max);
+        }
 
         return $racquets;
     }

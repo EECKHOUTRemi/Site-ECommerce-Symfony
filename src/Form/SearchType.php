@@ -56,6 +56,17 @@ class SearchType extends AbstractType
                 'placeholder' => 'Select grip size',
             ])
 
+            ->add('quantity', ChoiceType::class, [
+                'choices' => [
+                    '< 10' => 1,
+                    '10 - 30' => 2,
+                    '30 - 60' => 3,
+                    '> 60' => 4,
+                ],
+                'required' => false,
+                'placeholder' => 'Select stock quantity',
+            ])
+
             ->add('submit', SubmitType::class, [
                 'label' => 'Apply',
                 'attr' => ['class' => 'btn btn-light btn-sm flex-fill']

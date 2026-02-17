@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Racquet;
 use App\Form\AddToCartType;
-use App\Form\FilterType;
 use App\Form\SearchType;
 use App\Manager\CartManager;
 use App\Model\SearchData;
@@ -50,12 +49,13 @@ class RacquetController extends AbstractController
         $hasFilters = $searchData->weight !== null
             || $searchData->head_size !== null
             || $searchData->string_pattern !== null
-            || $searchData->grip_size !== null;
+            || $searchData->grip_size !== null
+            || $searchData->quantity !== null
+            ;
 
         if ($hasSearch || $hasFilters) {
             $paginator = $racquetRepository->findWithSearch($searchData);
         } else {
-            // No search or filters
             $paginator = $racquetRepository->getRacquetPaginator($offset);
         }
 
@@ -70,6 +70,7 @@ class RacquetController extends AbstractController
             'head_size' => $searchData->head_size,
             'string_pattern' => $searchData->string_pattern,
             'grip_size' => $searchData->grip_size,
+            'quantity' => $searchData->quantity,
         ]);
     }
 
@@ -87,8 +88,7 @@ class RacquetController extends AbstractController
             $data->setRacquet($racquet);
 
             $cart = $cartManager->getCurrentCart();
-            $cart
-                ->addRacquet($data)
+            $cart->addRacquet($data)
                 ->setUpdatedAt(new \DateTime())
                 ->setUser($this->getUser());
 
