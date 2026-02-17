@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Racquet;
 use App\Form\AddToCartType;
+use App\Form\RacquetRatingType;
 use App\Form\SearchType;
 use App\Manager\CartManager;
 use App\Model\SearchData;
 use App\Repository\RacquetRepository;
 use App\Service\RacquetChoiceService;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,14 +79,14 @@ class RacquetController extends AbstractController
     /**
      * @Route("/racquet/{id}", name="racquet_detail")
      */
-    public function detail(Racquet $racquet, Request $request, CartManager $cartManager)
+    public function detail(Racquet $racquet, Request $request, CartManager $cartManager, EntityManagerInterface $em)
     {
-        $form = $this->createForm(AddToCartType::class);
+        $cartForm = $this->createForm(AddToCartType::class);
+        $cartForm->handleRequest($request);
 
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+        if ($cartForm->isSubmitted() && $cartForm->isValid()) {
+            $data = $cartForm->getData();
             $data->setRacquet($racquet);
 
             $cart = $cartManager->getCurrentCart();
@@ -95,11 +97,36 @@ class RacquetController extends AbstractController
             $cartManager->save($cart);
 
             return $this->redirectToRoute('racquet_detail', ['id' => $racquet->getId()]);
+            }
+            
+        $ratingForm = $this->createForm(RacquetRatingType::class);
+        $ratingForm->handleRequest($request);
+
+        if ($ratingForm->isSubmitted() && $ratingForm->isValid()) {
+            // Get current Rating datas
+            $currentAvgRating = $racquet->getAvgRating() ?? 0;
+            $currentNbRatings = $racquet->getRacquetRatings()->count();
+            $currentSumRatings = $currentAvgRating * $currentNbRatings;
+
+            // Get submitted data
+            $submittedRating = $ratingForm->getData()['rating'];
+
+            // Set new Rating datas
+            $currentNbRatings += 1;
+            $currentSumRatings += $submittedRating;
+            $newAvgRating = $currentSumRatings / $currentNbRatings;
+
+            $racquet->setAvgRating($newAvgRating);
+            $em->flush();
+
+            dd($newAvgRating);
+            return $this->redirectToRoute('racquet_detail', ['id' => $racquet->getId()]);
         }
 
         return $this->render('racquet/detail.html.twig', [
             'racquet' => $racquet,
-            'form' => $form->createView()
-        ]);
+            'cartForm' => $cartForm->createView(),
+            'ratingForm' => $ratingForm->createView(),
+            ]);
     }
 }

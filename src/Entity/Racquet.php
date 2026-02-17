@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\RacquetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=RacquetRepository::class)
@@ -61,6 +64,22 @@ class Racquet
      * @ORM\Column(type="string", length=10)
      */
     private $imgExtension;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     * @Assert\Range(min=0, max=10)
+     */
+    private $avgRating;
+
+    /**
+     * @ORM\OneToMany(targetEntity=RacquetRating::class, mappedBy="racquetId", orphanRemoval=true)
+     */
+    private $racquetRating;
+
+    public function __construct()
+    {
+        $this->racquetRating = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -171,6 +190,51 @@ class Racquet
     public function setImgExtension(string $imgExtension): self
     {
         $this->imgExtension = $imgExtension;
+
+        return $this;
+    }
+
+    public function getAvgRating(): ?int
+    {
+        return $this->avgRating;
+    }
+
+    public function setAvgRating(?int $avgRating): self
+    {
+        if ($avgRating !== null && $avgRating > 10) {
+            $avgRating = 10;
+        }
+        $this->avgRating = $avgRating;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RacquetRating>
+     */
+    public function getRacquetRatings(): Collection
+    {
+        return $this->racquetRating;
+    }
+
+    public function addRacquetRating(RacquetRating $racquetRating): self
+    {
+        if (!$this->racquetRating->contains($racquetRating)) {
+            $this->racquetRating[] = $racquetRating;
+            $racquetRating->setRacquetId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRacquetRating(RacquetRating $racquetRating): self
+    {
+        if ($this->racquetRating->removeElement($racquetRating)) {
+            // set the owning side to null (unless already changed)
+            if ($racquetRating->getRacquetId() === $this) {
+                $racquetRating->setRacquetId(null);
+            }
+        }
 
         return $this;
     }

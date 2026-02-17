@@ -8,7 +8,30 @@
             <div class="col-md-10 offset-md-1">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
-                        <h1 class="h3 mb-0">{{ racquet.brand }} {{ racquet.model }}</h1>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h1 class="h3 mb-0">{{ racquet.brand }} {{ racquet.model }}</h1>
+                            <div class="rating-display">
+                                <!-- if racquet.avgRating, rating = racquet.avgRating else rating = null -->
+                                {% set rating = racquet.avgRating ? racquet.avgRating : null %} 
+                                <!-- if rating, ratingText = racquet.avgRating + "/10" else ratingText = "No rating for now" -->
+                                {% set ratingText = rating ? racquet.avgRating ~ "/10" : "No rating for now" %} 
+                                <span class="ms-2 badge 
+                                    {% if rating %}
+                                        {% if rating < 3 %}
+                                            bg-danger
+                                        {% elseif rating < 6 %}
+                                            bg-warning
+                                        {% elseif rating < 8 %}
+                                            bg-info
+                                        {% else %}
+                                            bg-success
+                                        {% endif %}
+                                    {% else %}
+                                        bg-light text-dark
+                                    {% endif %}
+                                ">{{ ratingText }}</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -53,21 +76,43 @@
                                     </tbody>
                                 </table>
 
-                                {{ form_start(form) }}
-                                <div class="form-group mb-3">
-                                    {{ form_label(form.quantity, 'Quantity', {'label_attr': {'class': 'font-weight-bold'}}) }}
-                                    {{ form_widget(form.quantity, {
-                                        'attr': {
-                                            'class': 'form-control ' ~ (form.quantity.vars.valid ? '' : 'is-invalid'),
-                                            'style': 'width: 100px;'
-                                        }
-                                    }) }}
-                                    <div class="invalid-feedback">
-                                        {{ form_errors(form.quantity) }}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5 class="mb-3">Add to Cart</h5>
+                                        {{ form_start(cartForm) }}
+                                        <div class="form-group mb-3">
+                                            {{ form_label(cartForm.quantity, 'Quantity', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                                            {{ form_widget(cartForm.quantity, {
+                                                'attr': {
+                                                    'class': 'form-control ' ~ (cartForm.quantity.vars.valid ? '' : 'is-invalid'),
+                                                    'style': 'width: 100px;'
+                                                }
+                                            }) }}
+                                            <div class="invalid-feedback">
+                                                {{ form_errors(cartForm.quantity) }}
+                                            </div>
+                                        </div>
+                                        {{ form_widget(cartForm.add, {'attr': {'class': 'btn btn-success btn-lg'}}) }}
+                                        {{ form_end(cartForm) }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mt-3">
+                                            <small class="text-muted d-block mb-2">Rate this racquet</small>
+                                            {{ form_start(ratingForm) }}
+                                            <div class="d-flex align-items-center gap-2">
+                                                {{ form_widget(ratingForm.rating, {
+                                                    'attr': {
+                                                        'class': 'form-control form-control-sm',
+                                                        'style': 'width: 70px;',
+                                                        'placeholder': '0-10'
+                                                    }
+                                                }) }}
+                                                {{ form_widget(ratingForm.submit, {'label': 'Submit', 'attr': {'class': 'btn btn-sm btn-outline-primary'}}) }}
+                                            </div>
+                                            {{ form_end(ratingForm) }}
+                                        </div>
                                     </div>
                                 </div>
-                                {{ form_widget(form.add, {'attr': {'class': 'btn btn-success btn-lg'}}) }}
-                                {{ form_end(form) }}
                             </div>
                         </div>
                     </div>
