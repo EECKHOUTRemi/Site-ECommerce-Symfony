@@ -32,10 +32,10 @@
 					<div class="card-body p-0">
 						{% if orders|length > 0 %}
 							<div class="table-responsive">
-								<table class="table table-hover table-striped mb-0">
+								<table id="orders" class="table table-hover table-striped mb-0">
 									<thead class="table-dark">
 										<tr>
-											<th>Order #</th>
+											<th>Order</th>
 											<th>Customer</th>
 											<th>Date</th>
 											<th>Status</th>
@@ -191,4 +191,8 @@
 			</div>
 		</div>
 	</div>
+{% endblock %}
+
+{% block script %}
+	<script src="{{ asset('js/datatable.js') }}"></script>
 {% endblock %}
