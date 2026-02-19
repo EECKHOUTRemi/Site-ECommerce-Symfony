@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Cart;
 
 use App\Entity\RacquetOrdered;
 use Symfony\Component\Form\AbstractType;
@@ -8,15 +8,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class AddToCartType extends AbstractType
+class CartItemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('quantity')
-            ->add('add', SubmitType::class, [
-                'label' => 'Add to cart'
-            ]);
+            ->add('remove', SubmitType::class)
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

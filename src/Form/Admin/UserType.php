@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Admin;
 
 use App\Entity\User;
-use App\Form\ChoiceInputType;
+use App\Form\Search\ChoiceInputType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -18,7 +18,6 @@ class UserType extends AbstractType
             ->add('username')
             ->add('roles', ChoiceInputType::class, [
                 'choices' => $options['roles'],
-                // TODO : getRoles et les afficher dynamiquement + 3e choice (TextType) -> flush dans bdd au submit du form (cf. notes.txt)
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'Roles',

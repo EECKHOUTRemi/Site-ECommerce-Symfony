@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Order;
-use App\Form\OrderConfirmationType;
+use App\Form\Admin\OrderConfirmationType;
 use App\Manager\UpdateRacquetManager;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;

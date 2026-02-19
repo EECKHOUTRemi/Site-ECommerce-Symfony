@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Racquet;
 use App\Entity\RacquetRating;
-use App\Form\AddToCartType;
+use App\Form\Cart\AddToCartType;
 use App\Form\RacquetRatingType;
-use App\Form\SearchType;
+use App\Form\Search\SearchType;
 use App\Manager\CartManager;
 use App\Model\SearchData;
 use App\Repository\RacquetRatingRepository;

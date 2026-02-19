@@ -2,7 +2,8 @@
 
 namespace App\Controller\Test;
 
-use App\Form\TestType;
+use App\Form\Test\TestType;
+use index;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

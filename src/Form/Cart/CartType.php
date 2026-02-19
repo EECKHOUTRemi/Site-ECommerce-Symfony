@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Cart;
 
 use App\Entity\Order;
-use App\Form\CartItemType;
-use Symfony\Component\Form\AbstractType;
+use App\Form\Cart\CartItemType;
 use App\Form\EventListener\ClearCartListener;
-use Symfony\Component\Form\FormBuilderInterface;
 use App\Form\EventListener\RemoveCartItemListener;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CartType extends AbstractType
 {
