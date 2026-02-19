@@ -78,20 +78,24 @@ class RacquetRepository extends ServiceEntityRepository
             $this->applyHeadSizeFilter($racquets, $searchData->head_size);
         }
 
-        if ($searchData->quantity !== null) {
-            $this->applyStockFilter($racquets, $searchData->quantity);
-        }
-
         if ($searchData->string_pattern !== null) {
             $racquets
-                ->andWhere('r.string_pattern = :string_pattern')
-                ->setParameter('string_pattern', $searchData->string_pattern);
+            ->andWhere('r.string_pattern = :string_pattern')
+            ->setParameter('string_pattern', $searchData->string_pattern);
         }
 
         if ($searchData->grip_size !== null) {
             $racquets
-                ->andWhere('r.grip_size = :grip_size')
-                ->setParameter('grip_size', $searchData->grip_size);
+            ->andWhere('r.grip_size = :grip_size')
+            ->setParameter('grip_size', $searchData->grip_size);
+        }
+
+        if ($searchData->quantity !== null) {
+            $this->applyStockFilter($racquets, $searchData->quantity);
+        }
+
+        if ($searchData->rating !== null) {
+            $this->applyRatingFilter($racquets, $searchData->rating);
         }
 
         $offset = max(0, ($searchData->page - 1) * self::PAGINATOR_PER_PAGE);
@@ -194,6 +198,34 @@ class RacquetRepository extends ServiceEntityRepository
             $racquets->andWhere('r.quantity <= :quantity_max')
                 ->setParameter('quantity_max', $max);
         }
+
+        return $racquets;    
+    }
+
+    private function applyRatingFilter($racquets, int $data)
+    {
+        switch ($data) {
+            case 1:
+                $min = 0;
+                $max = 2;
+                break;
+
+            case 2:
+                $min = 3;
+                $max = 6;
+                break;
+
+            case 3:
+                $min = 7;
+                $max = 10;
+                break;
+        }
+
+        $racquets->andWhere('r.avgRating >= :avgRating_min')
+            ->setParameter('avgRating_min', $min)
+            ->andWhere('r.avgRating <= :avgRating_max')
+            ->setParameter('avgRating_max', $max)
+        ;
 
         return $racquets;
     }

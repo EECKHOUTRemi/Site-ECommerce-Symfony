@@ -24,5 +24,8 @@ class SearchData{
 
     /** @var int */
     public $quantity;
-
+    
+    /** @var int */
+    public $rating;
+    
 }

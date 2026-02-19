@@ -25,19 +25,25 @@
 		</label>
 		{{ form_widget(form.grip_size, {'attr': {'class': 'form-select form-select-sm'}}) }}
 	</div>
-	<div class="col-md col-6">
+</div>
+<div class="row g-2 align-items-end mt-2">
+	<div class="col-md-4 col-12">
+		<label class="form-label text-white small mb-1">
+			Search
+		</label>
+		{{ form_widget(form.query, {'attr': {'class': 'form-control form-control-sm'}}) }}
+	</div>
+	<div class="col-md-2 col-6">
 		<label class="form-label text-white small mb-1">
 			Quantity
 		</label>
 		{{ form_widget(form.quantity, {'attr': {'class': 'form-select form-select-sm'}}) }}
 	</div>
-</div>
-<div class="row g-2 align-items-end mt-2">
-	<div class="col-md-8 col-12">
+	<div class="col-md-2 col-6">
 		<label class="form-label text-white small mb-1">
-			Search
+			Rating
 		</label>
-		{{ form_widget(form.query, {'attr': {'class': 'form-control form-control-sm'}}) }}
+		{{ form_widget(form.rating, {'attr': {'class': 'form-select form-select-sm'}}) }}
 	</div>
 	<div class="col-md-4 col-12">
 		<div class="d-flex gap-1">

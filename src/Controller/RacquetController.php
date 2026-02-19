@@ -53,6 +53,7 @@ class RacquetController extends AbstractController
             || $searchData->string_pattern !== null
             || $searchData->grip_size !== null
             || $searchData->quantity !== null
+            || $searchData->rating !== null
             ;
 
         if ($hasSearch || $hasFilters) {
@@ -118,8 +119,7 @@ class RacquetController extends AbstractController
 
             $racquet->setAvgRating($newAvgRating);
             $em->flush();
-
-            dd($newAvgRating);
+            
             return $this->redirectToRoute('racquet_detail', ['id' => $racquet->getId()]);
         }
 

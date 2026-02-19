@@ -67,6 +67,16 @@ class SearchType extends AbstractType
                 'placeholder' => 'Select stock quantity',
             ])
 
+            ->add('rating', ChoiceType::class, [
+                'choices' => [
+                    '0 - 2' => 1,
+                    '3 - 6' => 2,
+                    '7 - 10' => 3
+                ],
+                'required' => false,
+                'placeholder' => 'Select rating',
+            ])
+
             ->add('submit', SubmitType::class, [
                 'label' => 'Apply',
                 'attr' => ['class' => 'btn btn-light btn-sm flex-fill']
