@@ -38,6 +38,18 @@ class RacquetOrderedRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    
+    public function hasBeenOrdered($racquet): bool
+    {
+        $count = $this->createQueryBuilder('ro')
+            ->select('COUNT(ro.id)')
+            ->andWhere('ro.racquet = :racquet')
+            ->setParameter('racquet', $racquet)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count > 0;
+    }
 
 //    /**
 //     * @return RacquetOrdered[] Returns an array of RacquetOrdered objects

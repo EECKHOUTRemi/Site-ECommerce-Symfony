@@ -7,6 +7,7 @@ use App\Form\RacquetType;
 use App\Manager\NewRacquetManager;
 use App\Manager\UpdateRacquetManager;
 use App\Repository\RacquetRepository;
+use App\Repository\RacquetOrderedRepository;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -103,10 +104,16 @@ class AdminRacquetController extends AbstractController
     /**
      * @Route("/{id}", name="delete", methods={"POST"})
      */
-    public function delete(Request $request, Racquet $racquet, RacquetRepository $racquetRepository): Response
+    public function delete(Request $request, Racquet $racquet, RacquetRepository $racquetRepository, RacquetOrderedRepository $racquetOrderedRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $racquet->getId(), $request->request->get('_token'))) {
-            $racquetRepository->remove($racquet, true);
+            // Check if the racquet has been ordered
+            if ($racquetOrderedRepository->hasBeenOrdered($racquet)) {
+                $this->addFlash('error', 'Cannot delete this racquet because it has been ordered. You can reduce its quantity to 0 to make it unavailable instead.');
+            } else {
+                $racquetRepository->remove($racquet, true);
+                $this->addFlash('success', 'Racquet deleted successfully.');
+            }
         }
 
         return $this->redirectToRoute('app_admin_racquet_index', [], Response::HTTP_SEE_OTHER);

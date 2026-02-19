@@ -36,7 +36,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4 text-center mb-3">
-                                <img src="{{ asset('img/racquet/' ~ racquet.id ~ '.' ~ racquet.imgExtension) }}" alt="{{ racquet.brand }} {{ racquet.model }}" class="img-thumbnail" style="max-width: 100%;">
+                            {% set imgPath = 'img/racquet/' ~ racquet.id ~ '.' ~ racquet.imgExtension %}
+                                <img 
+                                src="{{ asset(file_exists(imgPath) ? imgPath : 'img/placeholder/racquet.png') }}" 
+                                alt="{{ racquet.brand }} {{ racquet.model }}" 
+                                class="img-thumbnail" 
+                                style="max-width: 100%;"
+                                >
                             </div>
                             <div class="col-md-8">
                                 <h2 class="text-primary mb-4">{{ racquet.price }} €</h2>
