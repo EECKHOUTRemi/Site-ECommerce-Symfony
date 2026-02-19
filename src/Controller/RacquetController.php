@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Racquet;
+use App\Entity\RacquetRating;
 use App\Form\AddToCartType;
 use App\Form\RacquetRatingType;
 use App\Form\SearchType;
 use App\Manager\CartManager;
 use App\Model\SearchData;
+use App\Repository\RacquetRatingRepository;
 use App\Repository\RacquetRepository;
 use App\Service\RacquetChoiceService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -80,8 +82,15 @@ class RacquetController extends AbstractController
     /**
      * @Route("/racquet/{id}", name="racquet_detail")
      */
-    public function detail(Racquet $racquet, Request $request, CartManager $cartManager, EntityManagerInterface $em)
+    public function detail(
+        Racquet $racquet, 
+        Request $request, 
+        CartManager $cartManager, 
+        EntityManagerInterface $em,
+        RacquetRatingRepository $racquetRatingRepository
+    )
     {
+        // Add to cart form
         $cartForm = $this->createForm(AddToCartType::class);
         $cartForm->handleRequest($request);
 
@@ -98,28 +107,35 @@ class RacquetController extends AbstractController
             $cartManager->save($cart);
 
             return $this->redirectToRoute('racquet_detail', ['id' => $racquet->getId()]);
-            }
-            
+        }
+        
+        // Rating form
         $ratingForm = $this->createForm(RacquetRatingType::class);
         $ratingForm->handleRequest($request);
 
         if ($ratingForm->isSubmitted() && $ratingForm->isValid()) {
-            // Get current Rating datas
-            $currentAvgRating = $racquet->getAvgRating() ?? 0;
-            $currentNbRatings = $racquet->getRacquetRatings()->count();
-            $currentSumRatings = $currentAvgRating * $currentNbRatings;
 
-            // Get submitted data
+            /** @var \App\Entity\User $user */
+            $user = $this->getUser();
             $submittedRating = $ratingForm->getData()['rating'];
+            
+            $racquetRating = new RacquetRating();
+            $racquetRating->setRacquet($racquet)
+                ->setUser($user)
+                ->setRating($submittedRating)
+            ;
+            $em->persist($racquetRating);
+            $em->flush();
+            
+            $nbRatings = $racquet->getRacquetRatings()->count();
+            $ratings = $racquetRatingRepository->getRatingByUser($racquet);
+            $sumRatings = array_sum($ratings);
 
-            // Set new Rating datas
-            $currentNbRatings += 1;
-            $currentSumRatings += $submittedRating;
-            $newAvgRating = $currentSumRatings / $currentNbRatings;
+            $newAvgRating = $sumRatings / $nbRatings;
 
             $racquet->setAvgRating($newAvgRating);
             $em->flush();
-            
+
             return $this->redirectToRoute('racquet_detail', ['id' => $racquet->getId()]);
         }
 

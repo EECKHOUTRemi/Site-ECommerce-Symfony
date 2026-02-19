@@ -72,7 +72,7 @@ class Racquet
     private $avgRating;
 
     /**
-     * @ORM\OneToMany(targetEntity=RacquetRating::class, mappedBy="racquetId", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=RacquetRating::class, mappedBy="racquet", orphanRemoval=true)
      */
     private $racquetRating;
 
@@ -221,7 +221,7 @@ class Racquet
     {
         if (!$this->racquetRating->contains($racquetRating)) {
             $this->racquetRating[] = $racquetRating;
-            $racquetRating->setRacquetId($this);
+            $racquetRating->setRacquet($this);
         }
 
         return $this;
@@ -231,8 +231,8 @@ class Racquet
     {
         if ($this->racquetRating->removeElement($racquetRating)) {
             // set the owning side to null (unless already changed)
-            if ($racquetRating->getRacquetId() === $this) {
-                $racquetRating->setRacquetId(null);
+            if ($racquetRating->getRacquet() === $this) {
+                $racquetRating->setRacquet(null);
             }
         }
 

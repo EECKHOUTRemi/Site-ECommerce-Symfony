@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Racquet;
 use App\Entity\RacquetRating;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +39,24 @@ class RacquetRatingRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getRatingByUser(Racquet $racquet){
+        $rawRatings = $this->createQueryBuilder('r')
+            ->select('r.rating')
+            ->andWhere('r.racquet = :racquet')
+            ->setParameter('racquet', $racquet)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        $cleanedRatings = [];
+        
+        foreach ($rawRatings as $rating){
+            array_push($cleanedRatings, $rating['rating']);
+        }
+
+        return $cleanedRatings;
     }
 
 //    /**

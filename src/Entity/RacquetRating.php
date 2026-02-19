@@ -26,13 +26,13 @@ class RacquetRating
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false, name="user_id")
      */
-    private $userId;
+    private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Racquet::class, inversedBy="racquetRating")
      * @ORM\JoinColumn(nullable=false, name="racquet_id")
      */
-    private $racquetId;
+    private $racquet;
 
 
     public function getId(): ?int
@@ -52,26 +52,26 @@ class RacquetRating
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(?User $userId): self
+    public function setUser(?User $user): self
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getRacquetId(): ?Racquet
+    public function getRacquet(): ?Racquet
     {
-        return $this->racquetId;
+        return $this->racquet;
     }
 
-    public function setRacquetId(?Racquet $racquetId): self
+    public function setRacquet(?Racquet $racquet): self
     {
-        $this->racquetId = $racquetId;
+        $this->racquet = $racquet;
 
         return $this;
     }
