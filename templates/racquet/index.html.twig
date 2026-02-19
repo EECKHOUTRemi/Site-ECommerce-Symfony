@@ -34,6 +34,10 @@
 						<div class="card-body">
 							<h5 class="card-title">{{ racquet.brand }}
 								{{ racquet.model }}</h5>
+								<div class="small text-muted mb-2">
+									<span class="text-warning">⭐</span>
+									{{ (racquet.avgRating ? racquet.avgRating ~ "/10" : "Not rated yet" ) }}
+								</div>
 							<h4 class="text-primary mb-3">{{ racquet.price }}
 								€</h4>
 
