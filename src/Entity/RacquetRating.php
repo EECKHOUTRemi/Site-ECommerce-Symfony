@@ -23,16 +23,16 @@ class RacquetRating
     private $rating;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false, name="user_id")
-     */
-    private $user;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Racquet::class, inversedBy="racquetRating")
      * @ORM\JoinColumn(nullable=false, name="racquet_id")
      */
     private $racquet;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ratings")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
 
     public function getId(): ?int

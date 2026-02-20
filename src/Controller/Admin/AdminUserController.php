@@ -78,8 +78,13 @@ class AdminUserController extends AbstractController
      */
     public function show(User $user): Response
     {
+        $orders = $user->getOrders()->toArray();
+        $ratings = $user->getRatings()->toArray();
+
         return $this->render('admin/admin_user/show.html.twig', [
             'user' => $user,
+            'orders' => $orders,
+            'ratings' => $ratings,
         ]);
     }
 
