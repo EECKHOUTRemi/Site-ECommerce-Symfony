@@ -27,22 +27,22 @@ class RacquetOrdered
     private $racquet;
 
         /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="smallint", length=3)
      */
     private $head_size;
 
     /**
-     * @ORM\Column(type="string", length=5, nullable=true)
+     * @ORM\Column(type="string", length=5)
      */
     private $string_pattern;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="smallint", length=3)
      */
     private $weight;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="smallint", length=1)
      */
     private $grip_size;
 
