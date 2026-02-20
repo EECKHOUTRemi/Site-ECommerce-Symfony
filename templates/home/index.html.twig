@@ -89,36 +89,9 @@
 			</div>
 
 			{% if featured_racquets is not empty %}
-				<div class="row g-4">
+				<div class="row">
 					{% for racquet in featured_racquets %}
-						<div class="col-md-4">
-							<div class="card h-100 shadow-sm">
-								<img src="{{ asset('img/racquet/' ~ racquet.id ~ '.' ~ racquet.imgExtension) }}" class="card-img-top" alt="{{ racquet.brand }} {{ racquet.model }}" style="height: 250px; object-fit: contain; padding: 20px;">
-								<div class="card-body">
-									<h5 class="card-title">{{ racquet.brand }}
-										{{ racquet.model }}</h5>
-									<h4 class="text-primary">{{ racquet.price }}
-										€</h4>
-									<div class="mb-2">
-										<span class="badge
-											{% if racquet.quantity >= 30 %}
-												bg-success
-											{% elseif racquet.quantity >= 10 %}
-												bg-warning
-											{% else %}
-												bg-danger
-											{% endif %}
-										">{{ racquet.quantity }}
-											in stock</span>
-									</div>
-								</div>
-								<div class="card-footer bg-transparent">
-									<a href="{{ path('racquet_detail', {'id': racquet.id}) }}" class="btn btn-outline-primary w-100">
-										View Details
-									</a>
-								</div>
-							</div>
-						</div>
+						{% include "base/_racquet_card.html.twig" %}
 					{% endfor %}
 				</div>
 

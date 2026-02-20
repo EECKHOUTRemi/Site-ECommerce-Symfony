@@ -1,0 +1,41 @@
+{% set imgPath = 'img/racquet/' ~ racquet.id ~ '.' ~ racquet.imgExtension %}
+<div class="col-md-4 mb-4">
+    <div class="card shadow-sm h-100">
+        <img 
+        src="{{ asset(file_exists(imgPath) ? imgPath : 'img/placeholder/racquet.png') }}" 
+        class="card-img-top" 
+        alt="{{ racquet.brand }} {{ racquet.model }}" 
+        style="height: 250px; object-fit: contain; padding: 20px;"
+        >
+        <div class="card-body">
+            <h5 class="card-title">{{ racquet.brand }}
+                {{ racquet.model }}</h5>
+                <div class="small text-muted mb-2">
+                    <span class="text-warning">⭐</span>
+                    {{ (racquet.avgRating ? racquet.avgRating ~ "/10" : "Not rated yet" ) }}
+                </div>
+            <h4 class="text-primary mb-3">{{ racquet.price }}
+                €</h4>
+
+            {% block specs %}{% endblock %}
+
+            <div class="mb-3">
+                <span class="badge
+                    {% if racquet.quantity >= 30 %}
+                        bg-success
+                    {% elseif racquet.quantity >= 10 %}
+                        bg-warning
+                    {% else %}
+                        bg-danger
+                    {% endif %}
+                ">{{ racquet.quantity }}
+                in stock</span>
+            </div>
+        </div>
+        <div class="card-footer bg-transparent">
+            <a href="{{ path('racquet_detail', {'id': racquet.id}) }}" class="btn btn-primary w-100">
+                View Details
+            </a>
+        </div>
+    </div>
+</div>
