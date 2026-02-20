@@ -131,12 +131,14 @@
 												<td>
 													<div class="d-flex align-items-center">
 														<span class="ms-2 badge 
-														{% if rating.rating >= 7 %}
-															bg-success
-														{% elseif rating.rating >= 3 %}
-															bg-warning text-dark
-														{% else %}
+														{% if rating.rating < 3 %}
 															bg-danger
+														{% elseif rating.rating < 6 %}
+															bg-warning text-dark
+														{% elseif rating.rating < 8 %}
+															bg-info
+														{% else %}
+															bg-success
 														{% endif %}
 														">{{ rating.rating }}/10</span>
 													</div>

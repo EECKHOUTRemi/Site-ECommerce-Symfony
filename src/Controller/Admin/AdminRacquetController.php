@@ -76,7 +76,7 @@ class AdminRacquetController extends AbstractController
      */
     public function show(Racquet $racquet): Response
     {
-        return $this->render('admin_racquet/show.html.twig', [
+        return $this->render('admin/admin_racquet/show.html.twig', [
             'racquet' => $racquet,
         ]);
     }
