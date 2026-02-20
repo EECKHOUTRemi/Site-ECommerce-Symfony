@@ -135,7 +135,16 @@ class AdminUserController extends AbstractController
 
             // Add custom text input role (choiceInput)
             if (isset($rolesData['choiceInput']) && !empty($rolesData['choiceInput'])) {
-                $finalRoles[] = $rolesData['choiceInput'];
+                $rawCustomRole = $rolesData['choiceInput'];
+                $handledCustomRole = str_replace(" ", "_", strtoupper($rawCustomRole));
+
+                if (!str_starts_with($handledCustomRole, 'ROLE_')) {
+                    $handledCustomRole = 'ROLE_' . $handledCustomRole;
+                }
+
+                if (!in_array($handledCustomRole, $currentRoles)) {
+                    $finalRoles[] = $handledCustomRole;
+                }
             }
 
             // Set the flattened roles array
