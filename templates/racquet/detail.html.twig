@@ -12,9 +12,9 @@
                             <h1 class="h3 mb-0">{{ racquet.brand }} {{ racquet.model }}</h1>
                             <div class="rating-display">
                                 <!-- if racquet.avgRating, rating = racquet.avgRating else rating = null -->
-                                {% set rating = racquet.avgRating  ? racquet.avgRating : null %} 
+                                {% set rating = racquet.avgRating is not null ? racquet.avgRating : null %} 
                                 <!-- if rating, ratingText = racquet.avgRating + "/10" else ratingText = "No rating for now" -->
-                                {% set ratingText = rating ? racquet.avgRating ~ "/10" : "No rating for now" %} 
+                                {% set ratingText = rating is not null ? racquet.avgRating ~ "/10" : "No rating for now" %} 
                                 <span class="ms-2 badge 
                                     {% if rating %}
                                         {% if rating < 3 %}
