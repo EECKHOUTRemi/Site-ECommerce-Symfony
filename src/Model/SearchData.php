@@ -11,21 +11,9 @@ class SearchData{
     public $query;
 
     /** @var int */
-    public $weight;
-
-    /** @var int */
-    public $head_size;
-
-    /** @var string */
-    public $string_pattern;
-
-    /** @var int */
-    public $grip_size;
-
-    /** @var int */
     public $quantity;
-    
+
     /** @var int */
     public $rating;
-    
+
 }

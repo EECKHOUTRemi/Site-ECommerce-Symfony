@@ -32,31 +32,16 @@ class RacquetController extends AbstractController
     public function racquets(Request $request, RacquetRepository $racquetRepository, RacquetChoiceService $racquetChoiceService): Response
     {
         $offset = max(0, $request->query->getInt('offset', 0));
-
-        $allStringPatterns = $racquetRepository->getAllUniquesStringPatterns();
-        $stringPatternChoices = $racquetChoiceService->arraySeter($allStringPatterns);
-
-        $allGripSizes = $racquetRepository->getAllUniquesGripSizes();
-        $gripSizeChoices = $racquetChoiceService->arraySeter($allGripSizes);
         
         $searchData = new SearchData();
-        $searchForm = $this->createForm(SearchType::class, $searchData, [
-            'string_pattern_choices' => $stringPatternChoices,
-            'grip_size_choices' => $gripSizeChoices
-        ]);
+        $searchForm = $this->createForm(SearchType::class, $searchData);
         $searchForm->handleRequest($request);
 
         $page = ($offset / RacquetRepository::PAGINATOR_PER_PAGE) + 1;
         $searchData->page = (int) $page;
 
         $hasSearch = $searchData->query !== null;
-        $hasFilters = $searchData->weight !== null
-            || $searchData->head_size !== null
-            || $searchData->string_pattern !== null
-            || $searchData->grip_size !== null
-            || $searchData->quantity !== null
-            || $searchData->rating !== null
-            ;
+        $hasFilters = $searchData->quantity !== null || $searchData->rating !== null;
 
         if ($hasSearch || $hasFilters) {
             $paginator = $racquetRepository->findWithSearch($searchData);
@@ -71,11 +56,8 @@ class RacquetController extends AbstractController
             'next' => $offset + RacquetRepository::PAGINATOR_PER_PAGE,
             'searchForm' => $searchForm->createView(),
             'query' => $searchData->query,
-            'weight' => $searchData->weight,
-            'head_size' => $searchData->head_size,
-            'string_pattern' => $searchData->string_pattern,
-            'grip_size' => $searchData->grip_size,
             'quantity' => $searchData->quantity,
+            'rating' => $searchData->rating,
         ]);
     }
 
