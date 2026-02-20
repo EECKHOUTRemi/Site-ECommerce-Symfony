@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Search;
+namespace App\Form\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -38,7 +38,7 @@ class ChoiceInputType extends AbstractType
                     'required' => false,
                     'label'    => false,
                     'attr'     => [
-                        'placeholder' => 'ROLE_XXX',
+                        'placeholder' => 'Enter new role',
                     ],
                 ]
             );
