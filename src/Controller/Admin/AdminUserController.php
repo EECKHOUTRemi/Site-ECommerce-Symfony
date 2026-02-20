@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Form\Admin\UserType;
+use App\Manager\RoleManager;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,7 +86,7 @@ class AdminUserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_admin_user_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    public function edit(Request $request, User $user, UserRepository $userRepository, RoleManager $roleManager): Response
     {
         $uniqueRoles = $userRepository->getUniqueRoles();
 
@@ -135,19 +136,9 @@ class AdminUserController extends AbstractController
 
             // Add custom text input role (choiceInput)
             if (isset($rolesData['choiceInput']) && !empty($rolesData['choiceInput'])) {
-                $rawCustomRole = $rolesData['choiceInput'];
-                $handledCustomRole = str_replace(" ", "_", strtoupper($rawCustomRole));
-
-                if (!str_starts_with($handledCustomRole, 'ROLE_')) {
-                    $handledCustomRole = 'ROLE_' . $handledCustomRole;
-                }
-
-                if (!in_array($handledCustomRole, $currentRoles)) {
-                    $finalRoles[] = $handledCustomRole;
-                }
+                $finalRoles[] = $roleManager->handleCustomRoleInput($currentRoles, $rolesData['choiceInput']);
             }
 
-            // Set the flattened roles array
             if (!empty($finalRoles)) {
                 $user->setRoles($finalRoles);
             }
