@@ -16,44 +16,10 @@ class SearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('query', TextType::class, [
-            'required' => false,
-            'attr' => [
-                'placeholder' => 'Search',
-            ]
-        ])
-
-            ->add('weight', ChoiceType::class, [
-                'choices' => [
-                    '< 270g' => 1,
-                    '270 - 290g' => 2,
-                    '290 - 310g' => 3,
-                    ' > 310g' => 4
-                ],
                 'required' => false,
-                'placeholder' => 'Select weight',
-            ])
-
-            ->add('head_size', ChoiceType::class, [
-                'choices' => [
-                    '< 630 cm²' => 1,
-                    '630 - 660 cm²' => 2,
-                    '660 - 690 cm²' => 3,
-                    ' > 690 cm²' => 4
-                ],
-                'required' => false,
-                'placeholder' => 'Select head size',
-            ])
-
-            ->add('string_pattern', ChoiceType::class, [
-                'choices' => $options['string_pattern_choices'],
-                'required' => false,
-                'placeholder' => 'Select string pattern',
-            ])
-
-            ->add('grip_size', ChoiceType::class, [
-                'choices' => $options['grip_size_choices'],
-                'required' => false,
-                'placeholder' => 'Select grip size',
+                'attr' => [
+                    'placeholder' => 'Search',
+                ]
             ])
 
             ->add('quantity', ChoiceType::class, [
