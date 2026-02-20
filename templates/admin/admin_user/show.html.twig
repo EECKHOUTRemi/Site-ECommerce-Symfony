@@ -64,7 +64,7 @@
 							</div>
 						{% else %}
 							<div class="table-responsive">
-								<table class="table table-striped table-hover table-bordered">
+								<table id="userOrders" class="table table-striped table-hover table-bordered">
 									<thead class="table-dark">
 										<tr>
 											<th>ID</th>
@@ -115,7 +115,7 @@
 							</div>
 						{% else %}
 							<div class="table-responsive">
-								<table class="table table-striped table-hover table-bordered">
+								<table id="userRatings" class="table table-striped table-hover table-bordered">
 									<thead class="table-dark">
 										<tr>
 											<th>ID</th>
@@ -165,4 +165,8 @@
 			</div>
 		</div>
 	</div>
+{% endblock %}
+
+{% block script %}
+	<script src="{{ asset('js/datatable.js') }}"></script>
 {% endblock %}

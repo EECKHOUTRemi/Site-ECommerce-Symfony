@@ -25,4 +25,23 @@ $(document).ready(function () {
         info: true,
         responsive: true
     });
+
+    $('#userOrders').DataTable({
+        ordering: true,
+        paging: false,
+        searching: false,
+        info: false,
+        scrollY: '400px',
+        scrollCollapse: true
+    });
+    
+    $('#userRatings').DataTable({
+        ordering: true,
+        paging: false,
+        searching: false,
+        info: false,
+        scrollY: '400px',
+        scrollCollapse: true
+    });
+    
 });
