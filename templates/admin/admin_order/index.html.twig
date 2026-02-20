@@ -9,7 +9,6 @@
 			<div class="col-md-12">
 				<div class="d-flex justify-content-between align-items-center">
 					<h1>
-						<i class="bi bi-receipt-cutoff"></i>
 						Orders Management
 					</h1>
 					<div>
@@ -25,7 +24,6 @@
 				<div class="card shadow-sm">
 					<div class="card-header bg-primary text-white">
 						<h5 class="mb-0">
-							<i class="bi bi-list-ul"></i>
 							All Orders
 						</h5>
 					</div>
@@ -52,11 +50,9 @@
 												</td>
 												<td>
 													{% if order.user %}
-														<i class="bi bi-person-circle"></i>
 														{{ order.user.email }}
 													{% else %}
 														<span class="text-muted">
-															<i class="bi bi-cart"></i>
 															Guest Cart
 														</span>
 													{% endif %}
@@ -71,32 +67,26 @@
 												<td>
 													{% if order.status == 'cart' %}
 														<span class="badge bg-secondary">
-															<i class="bi bi-cart"></i>
 															Cart
 														</span>
 													{% elseif order.status == 'pending_confirmation' or order.status == 'pending' %}
 														<span class="badge bg-warning text-dark">
-															<i class="bi bi-clock-history"></i>
 															Pending
 														</span>
 													{% elseif order.status == 'confirmed' %}
 														<span class="badge bg-info">
-															<i class="bi bi-check-circle"></i>
 															Confirmed
 														</span>
 													{% elseif order.status == 'shipped' %}
 														<span class="badge bg-primary">
-															<i class="bi bi-truck"></i>
 															Shipped
 														</span>
 													{% elseif order.status == 'delivered' %}
 														<span class="badge bg-success">
-															<i class="bi bi-box-seam"></i>
 															Delivered
 														</span>
 													{% elseif order.status == 'cancelled' %}
 														<span class="badge bg-danger">
-															<i class="bi bi-x-circle"></i>
 															Cancelled
 														</span>
 													{% else %}
@@ -120,7 +110,6 @@
 												<td class="text-center">
 													<div class="btn-group btn-group-sm">
 														<a href="{{ path('app_admin_orders_show', {id: order.id}) }}" class="btn btn-outline-primary" title="View Details">
-															<i class="bi bi-eye">View Details</i>
 														</a>
 													</div>
 												</td>
@@ -131,7 +120,6 @@
 							</div>
 						{% else %}
 							<div class="text-center py-5">
-								<i class="bi bi-inbox" style="font-size: 3rem; color: #ccc;"></i>
 								<p class="text-muted mt-3">No orders found.</p>
 							</div>
 						{% endif %}

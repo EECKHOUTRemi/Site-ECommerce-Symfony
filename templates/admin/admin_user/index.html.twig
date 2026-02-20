@@ -10,7 +10,6 @@
 			</div>
 			<div class="col-md-6 text-end">
 				<a href="{{ path('app_admin_user_new') }}" class="btn btn-primary">
-					<i class="bi bi-plus-circle"></i>
 					Create New User
 				</a>
 			</div>
@@ -51,11 +50,9 @@
 									<td>
 										<div class="d-flex gap-2">
 											<a href="{{ path('app_admin_user_show', {'id': user.id}) }}" class="btn btn-sm btn-info text-white" title="View User">
-												<i class="bi bi-eye"></i>
 												Show
 											</a>
 											<a href="{{ path('app_admin_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-warning" title="Edit User">
-												<i class="bi bi-pencil"></i>
 												Edit
 											</a>
 										</div>
@@ -64,7 +61,6 @@
 							{% else %}
 								<tr>
 									<td colspan="8">
-										<i class="bi bi-inbox"></i>
 										No records found
 									</td>
 								</tr>

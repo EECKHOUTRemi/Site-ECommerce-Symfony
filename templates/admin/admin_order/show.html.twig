@@ -10,11 +10,9 @@
 			<div class="col-md-12">
 				<div class="d-flex justify-content-between align-items-center">
 					<h1>
-						<i class="bi bi-receipt"></i>
 						Order #{{ order.id }}
 					</h1>
 					<a href="{{ path('app_admin_orders_index') }}" class="btn btn-outline-secondary">
-						<i class="bi bi-arrow-left"></i>
 						Back to Orders
 					</a>
 				</div>
@@ -39,7 +37,6 @@
 				<div class="card shadow-sm mb-4">
 					<div class="card-header bg-primary text-white">
 						<h5 class="mb-0">
-							<i class="bi bi-info-circle"></i>
 							Order Information
 						</h5>
 					</div>
@@ -58,32 +55,26 @@
 										<td>
 											{% if order.status == 'cart' %}
 												<span class="badge bg-secondary">
-													<i class="bi bi-cart"></i>
 													Cart
 												</span>
 											{% elseif order.status == 'pending_confirmation' or order.status == 'pending' %}
 												<span class="badge bg-warning text-dark">
-													<i class="bi bi-clock-history"></i>
 													Pending Confirmation
 												</span>
 											{% elseif order.status == 'confirmed' %}
 												<span class="badge bg-info">
-													<i class="bi bi-check-circle"></i>
 													Confirmed
 												</span>
 											{% elseif order.status == 'shipped' %}
 												<span class="badge bg-primary">
-													<i class="bi bi-truck"></i>
 													Shipped
 												</span>
 											{% elseif order.status == 'delivered' %}
 												<span class="badge bg-success">
-													<i class="bi bi-box-seam"></i>
 													Delivered
 												</span>
 											{% elseif order.status == 'cancelled' %}
 												<span class="badge bg-danger">
-													<i class="bi bi-x-circle"></i>
 													Cancelled
 												</span>
 											{% endif %}
@@ -105,11 +96,9 @@
 										<th width="40%">Customer:</th>
 										<td>
 											{% if order.user %}
-												<i class="bi bi-person-circle"></i>
 												{{ order.user.email }}
 											{% else %}
 												<span class="text-muted">
-													<i class="bi bi-cart"></i>
 													Guest / Cart
 												</span>
 											{% endif %}
@@ -142,7 +131,6 @@
 				<div class="card shadow-sm mb-4">
 					<div class="card-header bg-secondary text-white">
 						<h5 class="mb-0">
-							<i class="bi bi-box-seam"></i>
 							Order Items
 						</h5>
 					</div>
@@ -166,7 +154,6 @@
 														<img src="{{ asset('img/racquet/' ~ item.racquet.id ~ '.' ~ item.racquet.imgExtension) }}" alt="{{ item.racquet.brand }} {{ item.racquet.model }}" class="me-3" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
 													{% else %}
 														<div class="me-3 bg-light d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; border-radius: 8px;">
-															<i class="bi bi-image text-muted"></i>
 														</div>
 													{% endif %}
 													<div>
@@ -219,7 +206,6 @@
 				<div class="card shadow-sm mb-4">
 					<div class="card-header bg-info text-white">
 						<h5 class="mb-0">
-							<i class="bi bi-lightning"></i>
 							Quick Actions
 						</h5>
 					</div>
@@ -237,14 +223,12 @@
 				<div class="card shadow-sm">
 					<div class="card-header bg-secondary text-white">
 						<h5 class="mb-0">
-							<i class="bi bi-clock-history"></i>
 							Timeline
 						</h5>
 					</div>
 					<div class="card-body">
 						<ul class="list-unstyled">
 							<li class="mb-3">
-								<i class="bi bi-circle-fill text-success"></i>
 								<strong>Created</strong>
 								<br>
 								<small class="text-muted ms-3">
@@ -252,7 +236,6 @@
 								</small>
 							</li>
 							<li class="mb-3">
-								<i class="bi bi-circle-fill text-primary"></i>
 								<strong>Last Updated</strong>
 								<br>
 								<small class="text-muted ms-3">
