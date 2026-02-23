@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Select2Controller!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <form method="POST" action="{{ path('app_select2_submit') }}">
+        <select class="js-data-example-ajax" name="racquet_id" required></select>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form>
+    
+    {% if selectedRacquet is defined %}
+        <div class="alert alert-success mt-3">
+            You selected: <strong>{{ selectedRacquet.id }}</strong>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+{% block script %}
+	<script src="{{ asset('js/select2.js') }}"></script>
+{% endblock %}

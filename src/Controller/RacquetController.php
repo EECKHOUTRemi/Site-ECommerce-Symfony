@@ -127,4 +127,13 @@ class RacquetController extends AbstractController
             'ratingForm' => $ratingForm->createView(),
             ]);
     }
+
+    /**
+     * @Route("/racquets/data", name="racquet_data")
+     */
+    public function data(Request $request, RacquetRepository $racquetRepository){
+        $filterTerm = $request->query->get('q', '');
+        $racquets = $racquetRepository->findByFilterTerm($filterTerm);
+        return $this->json(['racquets' => $racquets]);
+    }
 }
