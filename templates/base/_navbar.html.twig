@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="{{ path('app_home') }}">
-			Racquet Store
+			🎾 Racquet Store
 		</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -10,7 +10,7 @@
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('racquets') }}">
-						Our collection
+						🏪 Our collection
 					</a>
 				</li>
 			</ul>
@@ -18,25 +18,25 @@
 				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('app_cart_index') }}">
-							Cart
+							🛒 Cart
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link text-danger" href="{{ path('app_logout') }}">
-							Logout
+							🚪 Logout
 						</a>
 					</li>
 					{% if is_granted('ROLE_RACQUET_ADMIN') or is_granted('ROLE_USER_ADMIN') or is_granted('ROLE_ORDER_ADMIN')  %}
 					<li class="nav-item">
 						<a class="nav-link text-warning" href="{{ path('app_admin_index') }}">
-							Admin
+							⚙️ Admin
 						</a>
 					</li>
 					{% endif %}
 				{% else %}
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('app_login') }}">
-							Login
+							🔑 Login
 						</a>
 					</li>
 				{% endif %}
