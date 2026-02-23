@@ -84,7 +84,7 @@ class AdminRacquetController extends AbstractController
     /**
      * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Racquet $racquet, RacquetRepository $racquetRepository): Response
+    public function edit(Request $request, Racquet $racquet): Response
     {
         $form = $this->createForm(RacquetType::class, $racquet);
         $form->HandleRequest($request);

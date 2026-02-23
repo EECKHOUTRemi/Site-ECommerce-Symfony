@@ -16,10 +16,6 @@ class RacquetType extends AbstractType
         $builder
             ->add('brand')
             ->add('model')
-            ->add('head_size')
-            ->add('string_pattern')
-            ->add('weight')
-            ->add('grip_size')
             ->add('price')
             ->add('quantity')
             ->add('img', FileType::class, [

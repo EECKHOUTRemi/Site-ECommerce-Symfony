@@ -4,8 +4,9 @@ namespace App\Manager;
 
 use App\Entity\Racquet;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class NewRacquetManager
 {
@@ -26,10 +27,6 @@ class NewRacquetManager
     {
         $racquet->setBrand($form->get('brand')->getData());
         $racquet->setModel($form->get('model')->getData());
-        $racquet->setHeadSize($form->get('head_size')->getData());
-        $racquet->setStringPattern($form->get('string_pattern')->getData());
-        $racquet->setWeight($form->get('weight')->getData());
-        $racquet->setGripSize($form->get('grip_size')->getData());
         $racquet->setPrice($form->get('price')->getData());
         $racquet->setQuantity($form->get('quantity')->getData());
 
