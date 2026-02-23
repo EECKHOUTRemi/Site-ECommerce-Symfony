@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container mt-5">
-        <h1 class="mb-4">Your Cart</h1>
+        <h1 class="mb-4">🛒 Your Cart</h1>
         {% if cart.racquets.count > 0 %}
             {{ form_start(form) }}
             <div class="row">
@@ -12,7 +12,7 @@
                 <div class="col-md-8">
                     <div class="card shadow-sm">
                         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                            <h2 class="h5 mb-0">Racquets</h2>
+                            <h2 class="h5 mb-0">🎾 Racquets</h2>
                             <div>
                                 {{ form_widget(form.save, {'attr': {'class': 'btn btn-warning btn-sm'}}) }}
                                 {{ form_widget(form.clear, {'attr': {'class': 'btn btn-light btn-sm ml-2'}}) }}
@@ -61,7 +61,7 @@
                 <div class="col-md-4">
                     <div class="card shadow-sm">
                         <div class="card-header bg-primary text-white">
-                            <h2 class="h5 mb-0">Summary</h2>
+                            <h2 class="h5 mb-0">📊 Summary</h2>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between">
@@ -70,7 +70,7 @@
                             </li>
                         </ul>
                         <div class="card-body">
-                            <a href= {{ path("app_cart_checkout") }} class="btn btn-success w-100">Checkout</a>
+                            <a href= {{ path("app_cart_checkout") }} class="btn btn-success w-100">💳 Checkout</a>
                         </div>
                     </div>
                 </div>
