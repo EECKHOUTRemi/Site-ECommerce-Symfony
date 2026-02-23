@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Racquet;
+use App\Service\GlobalServices;
 use App\Model\FilterData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -22,9 +23,13 @@ class RacquetRepository extends ServiceEntityRepository
 
     public const PAGINATOR_PER_PAGE = 9;
 
-    public function __construct(ManagerRegistry $registry)
+    /** @var GlobalServices */
+    private $globalServices;
+
+    public function __construct(ManagerRegistry $registry, GlobalServices $globalServices)
     {
         parent::__construct($registry, Racquet::class);
+        $this->globalServices = $globalServices;
     }
 
     public function add(Racquet $entity, bool $flush = false): void
@@ -45,6 +50,24 @@ class RacquetRepository extends ServiceEntityRepository
         }
     }
 
+    public function getUniqueBrands(): array
+    {
+        $racquets = $this->createQueryBuilder('r')
+            ->select('r.brand')
+            ->getQuery()
+            ->execute();
+
+        $brands = [];
+
+        foreach ($racquets as $racquet) {
+            if ($racquet['brand']) {
+                $brands[$racquet['brand']] = $racquet['brand'];
+            }
+        }
+
+        return array_unique($brands);
+    }
+
     /**
      * @return Racquet[] Returns an array of Racquet objects
      */
@@ -63,6 +86,14 @@ class RacquetRepository extends ServiceEntityRepository
     {
         $racquets = $this->createQueryBuilder('r');
 
+        if ($filterData->brand !== null) {
+            $this->applyBrandFilter($racquets, $filterData->brand);
+        }
+
+        if ($filterData->price !== null) {
+            $this->applyPriceFilter($racquets, $filterData->price);
+        }
+
         if ($filterData->quantity !== null) {
             $this->applyStockFilter($racquets, $filterData->quantity);
         }
@@ -74,6 +105,49 @@ class RacquetRepository extends ServiceEntityRepository
         $offset = max(0, ($filterData->page - 1) * self::PAGINATOR_PER_PAGE);
 
         return $this->getRacquetPaginator($offset, $racquets);
+    }
+
+    private function applyBrandFilter($racquets, string $data)
+    {
+        $racquets->andWhere('r.brand = :brand')
+            ->setParameter('brand', $data);
+
+        return $racquets;    
+    }
+
+    private function applyPriceFilter($racquets, int $data)
+    {
+        switch ($data) {
+            case 1:
+                $min = 0;
+                $max = 100;
+                break;
+
+            case 2:
+                $min = 100;
+                $max = 200;
+                break;
+
+            case 3:
+                $min = 200;
+                $max = 300;
+                break;
+
+            case 4:
+                $min = 300;
+                $max = null;
+                break;
+        }
+
+        $racquets->andWhere('r.price >= :price_min')
+            ->setParameter('price_min', $min);
+
+        if ($max) {
+            $racquets->andWhere('r.price <= :price_max')
+                ->setParameter('price_max', $max);
+        }
+
+        return $racquets;    
     }
 
     private function applyStockFilter($racquets, int $data)

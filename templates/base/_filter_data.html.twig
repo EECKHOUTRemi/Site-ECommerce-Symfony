@@ -1,24 +1,36 @@
 <!-- filepath: c:\wamp64\www\e-commerce-raquettes\templates\base\_filter_data.html.twig -->
 {{ form_start(form, {'attr': {'class': 'filter-form'}}) }}
-<div class="row g-2 align-items-end">
-	<div class="col-md-2 col-6">
-		<label class="form-label text-white small mb-1">
-			Quantity
+<div class="row g-3 align-items-end">
+	<div class="col-md-3 col-sm-6">
+		<label class="form-label text-white small mb-2 fw-semibold">
+			<span class="me-1">🏷️</span> Brand
 		</label>
-		{{ form_widget(form.quantity, {'attr': {'class': 'form-select form-select-sm'}}) }}
+		{{ form_widget(form.brand, {'attr': {'class': 'form-select form-select-sm shadow-sm'}}) }}
 	</div>
-	<div class="col-md-2 col-6">
-		<label class="form-label text-white small mb-1">
-			Rating
+	<div class="col-md-3 col-sm-6">
+		<label class="form-label text-white small mb-2 fw-semibold">
+			<span class="me-1">⭐</span> Rating
 		</label>
-		{{ form_widget(form.rating, {'attr': {'class': 'form-select form-select-sm'}}) }}
+		{{ form_widget(form.rating, {'attr': {'class': 'form-select form-select-sm shadow-sm'}}) }}
 	</div>
-	<div class="col-md-4 col-12">
-		<div class="d-flex gap-1">
-			<a href="{{ path('racquets') }}" class="btn btn-outline-light btn-sm flex-fill">
-				Clear
+	<div class="col-md-3 col-sm-6">
+		<label class="form-label text-white small mb-2 fw-semibold">
+			<span class="me-1">📦</span> Quantity
+		</label>
+		{{ form_widget(form.quantity, {'attr': {'class': 'form-select form-select-sm shadow-sm'}}) }}
+	</div>
+	<div class="col-md-3 col-sm-6">
+		<label class="form-label text-white small mb-2 fw-semibold">
+			<span class="me-1">💰</span> Max Price
+		</label>
+		{{ form_widget(form.price, {'attr': {'class': 'form-select form-select-sm shadow-sm'}}) }}
+	</div>
+	<div class="col-12">
+		<div class="d-flex gap-2 justify-content-end">
+			<a href="{{ path('racquets') }}" class="btn btn-outline-light btn-sm px-4">
+				Reset Filters
 			</a>
-			{{ form_widget(form.submit) }}
+			{{ form_widget(form.submit, {'attr': {'class': 'btn btn-light btn-sm px-4'}}) }}
 		</div>
 	</div>
 </div>

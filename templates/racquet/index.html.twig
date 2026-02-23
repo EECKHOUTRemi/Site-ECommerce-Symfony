@@ -39,7 +39,7 @@
 			<ul class="pagination justify-content-center">
 				{% if previous >= 0 %}
 					<li class="page-item">
-					<a class="page-link" href={{ path('racquets', { offset: previous, rating: rating, quantity: quantity } ) }}>
+					<a class="page-link" href={{ path('racquets', { offset: previous, brand: brand, price: price, rating: rating, quantity: quantity } ) }}>
 							<span aria-hidden="true">&laquo;</span>
 							Previous
 						</a>
@@ -54,7 +54,7 @@
 
 				{% if next < racquets|length %}
 					<li class="page-item">
-					<a class="page-link" href={{ path('racquets', { offset: next, rating: rating, quantity: quantity } ) }}>
+					<a class="page-link" href={{ path('racquets', { offset: next, brand: brand, price: price, rating: rating, quantity: quantity } ) }}>
 							Next
 							<span aria-hidden="true">&raquo;</span>
 						</a>

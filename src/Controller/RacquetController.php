@@ -32,14 +32,22 @@ class RacquetController extends AbstractController
     {
         // Filter form
         $offset = max(0, $request->query->getInt('offset', 0));
+
+        $brands = $racquetRepository->getUniqueBrands();
         
         $filterData = new FilterData();
-        $filterForm = $this->createForm(FilterType::class, $filterData);
+        $filterForm = $this->createForm(FilterType::class, $filterData, [
+            'brand_choices' => $brands
+        ]);
         $filterForm->handleRequest($request);
 
         $page = ($offset / RacquetRepository::PAGINATOR_PER_PAGE) + 1;
         $filterData->page = (int) $page;
-        $hasFilters = $filterData->quantity !== null || $filterData->rating !== null;
+        $hasFilters = $filterData->brand !== null 
+            || $filterData->price !== null
+            || $filterData->quantity !== null
+            || $filterData->rating !== null
+        ;
 
         if ($hasFilters) {
             $paginator = $racquetRepository->findWithFilter($filterData);
@@ -64,6 +72,8 @@ class RacquetController extends AbstractController
             'previous' => $offset - RacquetRepository::PAGINATOR_PER_PAGE,
             'next' => $offset + RacquetRepository::PAGINATOR_PER_PAGE,
             'filterForm' => $filterForm->createView(),
+            'brand' => $filterData->brand,
+            'price' => $filterData->price,
             'quantity' => $filterData->quantity,
             'rating' => $filterData->rating,
         ]);

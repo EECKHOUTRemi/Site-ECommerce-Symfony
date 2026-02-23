@@ -6,16 +6,21 @@ use App\Model\FilterData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FilterType extends AbstractType
 {
-
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('quantity', ChoiceType::class, [
+        $builder->add('brand', ChoiceType::class, [
+                'choices' => $options['brand_choices'],
+                'required' => false,
+                'placeholder' => 'Select brand',
+            ])
+
+            ->add('quantity', ChoiceType::class, [
                 'choices' => [
                     '< 10' => 1,
                     '10 - 30' => 2,
@@ -25,7 +30,7 @@ class FilterType extends AbstractType
                 'required' => false,
                 'placeholder' => 'Select stock quantity',
             ])
-
+            
             ->add('rating', ChoiceType::class, [
                 'choices' => [
                     '0 - 2' => 1,
@@ -36,6 +41,17 @@ class FilterType extends AbstractType
                 'placeholder' => 'Select rating',
             ])
 
+            ->add('price', ChoiceType::class, [
+                'choices' => [
+                    '< 100' => 1,
+                    '100 - 200' => 2,
+                    '200 - 300' => 3,
+                    '> 300' => 4
+                ],
+                'required' => false,
+                'placeholder' => 'Select price',
+            ])
+            
             ->add('submit', SubmitType::class, [
                 'label' => 'Apply',
                 'attr' => ['class' => 'btn btn-light btn-sm flex-fill']
@@ -49,8 +65,7 @@ class FilterType extends AbstractType
             'data_class' => FilterData::class,
             'method' => 'GET',
             'csrf_protection' => false,
-            'string_pattern_choices' => [],
-            'grip_size_choices' => [],
+            'brand_choices' => [],
         ]);
     }
 
