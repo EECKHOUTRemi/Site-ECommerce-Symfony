@@ -2,13 +2,10 @@
 
 namespace App\Model;
 
-class SearchData{
+class FilterData{
 
     /** @var int */
     public $page = 1;
-
-    /** @var string */
-    public $query;
 
     /** @var int */
     public $quantity;

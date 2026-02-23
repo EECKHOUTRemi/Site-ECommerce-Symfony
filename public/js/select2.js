@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.js-data-example-ajax').select2({
+    $('.search-racquet').select2({
         width: '100%',
         placeholder: 'Search for a racquet...',
         minimumInputLength: 2,

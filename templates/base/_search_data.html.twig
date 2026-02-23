@@ -1,11 +1,10 @@
-{{ form_start(form, {'attr': {'class': 'd-flex', 'role': 'search'}}) }}
-<div class="input-group">
-	{{ form_widget(form.query, {'attr': {'class': 'form-control', 'placeholder': 'Search racquets...', 'aria-label': 'Search'}}) }}
-	<button type="submit" class="btn btn-light">
-		Search
-	</button>
-	<a href="{{ path('racquets') }}" class="btn btn-light">
-		Clear
-	</a>
-</div>
-{{ form_end(form) }}
+<form method="POST" action="{{ path('racquets') }}">
+    <div class="row mb-2">
+        <div class="col-md-10">
+            <select class="search-racquet" name="racquet_id"></select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-light w-100">Search</button>
+        </div>
+    </div>
+</form>

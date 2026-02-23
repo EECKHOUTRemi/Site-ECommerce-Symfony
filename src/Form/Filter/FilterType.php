@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Search;
+namespace App\Form\Filter;
 
-use App\Model\SearchData;
+use App\Model\FilterData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -10,19 +10,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SearchType extends AbstractType
+class FilterType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('query', TextType::class, [
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Search',
-                ]
-            ])
-
-            ->add('quantity', ChoiceType::class, [
+        $builder->add('quantity', ChoiceType::class, [
                 'choices' => [
                     '< 10' => 1,
                     '10 - 30' => 2,
@@ -47,13 +40,13 @@ class SearchType extends AbstractType
                 'label' => 'Apply',
                 'attr' => ['class' => 'btn btn-light btn-sm flex-fill']
             ])
-        ;;
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => SearchData::class,
+            'data_class' => FilterData::class,
             'method' => 'GET',
             'csrf_protection' => false,
             'string_pattern_choices' => [],

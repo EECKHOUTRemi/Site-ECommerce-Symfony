@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Racquet;
-use App\Model\SearchData;
+use App\Model\FilterData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -11,12 +11,12 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Racquet>
- *
- * @method Racquet|null find($id, $lockMode = null, $lockVersion = null)
- * @method Racquet|null findOneBy(array $criteria, array $orderBy = null)
- * @method Racquet[]    findAll()
- * @method Racquet[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
+*
+* @method Racquet|null find($id, $lockMode = null, $lockVersion = null)
+* @method Racquet|null findOneBy(array $criteria, array $orderBy = null)
+* @method Racquet[]    findAll()
+* @method Racquet[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+*/
 class RacquetRepository extends ServiceEntityRepository
 {
 
@@ -59,26 +59,19 @@ class RacquetRepository extends ServiceEntityRepository
         return new Paginator($queryBuilder->getQuery());
     }
 
-    public function findWithSearch(SearchData $searchData)
+    public function findWithFilter(FilterData $filterData)
     {
         $racquets = $this->createQueryBuilder('r');
 
-        if ($searchData->query !== null) {
-            $racquets
-                ->andWhere('r.brand LIKE :query')
-                ->orWhere('r.model LIKE :query')
-                ->setParameter('query', "%{$searchData->query}%");
+        if ($filterData->quantity !== null) {
+            $this->applyStockFilter($racquets, $filterData->quantity);
         }
 
-        if ($searchData->quantity !== null) {
-            $this->applyStockFilter($racquets, $searchData->quantity);
+        if ($filterData->rating !== null) {
+            $this->applyRatingFilter($racquets, $filterData->rating);
         }
 
-        if ($searchData->rating !== null) {
-            $this->applyRatingFilter($racquets, $searchData->rating);
-        }
-
-        $offset = max(0, ($searchData->page - 1) * self::PAGINATOR_PER_PAGE);
+        $offset = max(0, ($filterData->page - 1) * self::PAGINATOR_PER_PAGE);
 
         return $this->getRacquetPaginator($offset, $racquets);
     }
@@ -145,4 +138,31 @@ class RacquetRepository extends ServiceEntityRepository
 
         return $racquets;
     }
+
+    public function findByFilterTerm(string $filterTerm): array
+    {
+        $qb = $this->createQueryBuilder('r');
+        
+        if (!empty($filterTerm)) {
+            $qb->where('r.brand LIKE :term OR r.model LIKE :term')
+                ->setParameter('term', '%' . $filterTerm . '%');
+        }
+        
+        $racquets = $qb->getQuery()->getResult();
+        $dataRacquet = [];
+
+        foreach($racquets as $racquet){
+            $dataRacquet[] = [
+                "id" => $racquet->getId(),
+                "brand" => $racquet->getBrand(),
+                "model" => $racquet->getModel(),
+                "price" => $racquet->getPrice(),
+                "quantity" => $racquet->getQuantity(),
+                "rating" => $racquet->getAvgRating(),
+            ];           
+        }
+
+        return $dataRacquet;
+    }
+    
 }

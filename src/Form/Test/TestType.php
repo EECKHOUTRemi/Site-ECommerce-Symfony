@@ -2,7 +2,7 @@
 
 namespace App\Form\Test;
 
-use App\Form\Search\ChoiceInputType;
+use App\Form\Filter\ChoiceInputType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

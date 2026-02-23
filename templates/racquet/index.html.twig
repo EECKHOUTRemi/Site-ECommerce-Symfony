@@ -13,9 +13,12 @@
 						<span>{{ count }}
 							racquets found</span>
 					</div>
+					<div class="col-md-6">
+						{% include "base/_search_data.html.twig" %}
+					</div>
 				</div>
 				<div class="border-top pt-2">
-					{{ include("base/_filter_data.html.twig", { 'form' : searchForm }) }}
+					{{ include("base/_filter_data.html.twig", { 'form' : filterForm }) }}
 				</div>
 			</div>
 		</div>
@@ -36,7 +39,7 @@
 			<ul class="pagination justify-content-center">
 				{% if previous >= 0 %}
 					<li class="page-item">
-					<a class="page-link" href={{ path('racquets', { offset: previous, query: query, rating: rating, quantity: quantity } ) }}>
+					<a class="page-link" href={{ path('racquets', { offset: previous, rating: rating, quantity: quantity } ) }}>
 							<span aria-hidden="true">&laquo;</span>
 							Previous
 						</a>
@@ -51,7 +54,7 @@
 
 				{% if next < racquets|length %}
 					<li class="page-item">
-					<a class="page-link" href={{ path('racquets', { offset: next, query: query, rating: rating, quantity: quantity } ) }}>
+					<a class="page-link" href={{ path('racquets', { offset: next, rating: rating, quantity: quantity } ) }}>
 							Next
 							<span aria-hidden="true">&raquo;</span>
 						</a>
@@ -66,4 +69,8 @@
 			</ul>
 		</nav>
 	</div>
+{% endblock %}
+
+{% block script %}
+	<script src="{{ asset('js/select2.js') }}"></script>
 {% endblock %}

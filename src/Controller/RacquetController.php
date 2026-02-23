@@ -6,12 +6,11 @@ use App\Entity\Racquet;
 use App\Entity\RacquetRating;
 use App\Form\Cart\AddToCartType;
 use App\Form\RacquetRatingType;
-use App\Form\Search\SearchType;
+use App\Form\Filter\FilterType;
 use App\Manager\CartManager;
-use App\Model\SearchData;
+use App\Model\FilterData;
 use App\Repository\RacquetRatingRepository;
 use App\Repository\RacquetRepository;
-use App\Service\RacquetChoiceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,24 +28,34 @@ class RacquetController extends AbstractController
     /**
      * @Route("/racquets", name="racquets")
      */
-    public function racquets(Request $request, RacquetRepository $racquetRepository, RacquetChoiceService $racquetChoiceService): Response
+    public function racquets(Request $request, RacquetRepository $racquetRepository): Response
     {
+        // Filter form
         $offset = max(0, $request->query->getInt('offset', 0));
         
-        $searchData = new SearchData();
-        $searchForm = $this->createForm(SearchType::class, $searchData);
-        $searchForm->handleRequest($request);
+        $filterData = new FilterData();
+        $filterForm = $this->createForm(FilterType::class, $filterData);
+        $filterForm->handleRequest($request);
 
         $page = ($offset / RacquetRepository::PAGINATOR_PER_PAGE) + 1;
-        $searchData->page = (int) $page;
+        $filterData->page = (int) $page;
+        $hasFilters = $filterData->quantity !== null || $filterData->rating !== null;
 
-        $hasSearch = $searchData->query !== null;
-        $hasFilters = $searchData->quantity !== null || $searchData->rating !== null;
-
-        if ($hasSearch || $hasFilters) {
-            $paginator = $racquetRepository->findWithSearch($searchData);
+        if ($hasFilters) {
+            $paginator = $racquetRepository->findWithFilter($filterData);
         } else {
             $paginator = $racquetRepository->getRacquetPaginator($offset);
+        }
+
+        // Search bar (select2)
+        $racquetId = $request->request->get('racquet_id');
+        
+        if ($racquetId) {
+            $racquet = $racquetRepository->find($racquetId);
+            
+            if ($racquet) {
+                return $this->redirectToRoute('racquet_detail', ['id' => $racquetId]);
+            }
         }
 
         return $this->render('racquet/index.html.twig', [
@@ -54,10 +63,9 @@ class RacquetController extends AbstractController
             'count' => count($paginator),
             'previous' => $offset - RacquetRepository::PAGINATOR_PER_PAGE,
             'next' => $offset + RacquetRepository::PAGINATOR_PER_PAGE,
-            'searchForm' => $searchForm->createView(),
-            'query' => $searchData->query,
-            'quantity' => $searchData->quantity,
-            'rating' => $searchData->rating,
+            'filterForm' => $filterForm->createView(),
+            'quantity' => $filterData->quantity,
+            'rating' => $filterData->rating,
         ]);
     }
 
@@ -132,8 +140,31 @@ class RacquetController extends AbstractController
      * @Route("/racquets/data", name="racquet_data")
      */
     public function data(Request $request, RacquetRepository $racquetRepository){
-        $filterTerm = $request->query->get('q', '');
-        $racquets = $racquetRepository->findByFilterTerm($filterTerm);
+        $searchTerm = $request->query->get('q', '');
+        $racquets = $racquetRepository->findByFilterTerm($searchTerm);
         return $this->json(['racquets' => $racquets]);
+    }
+
+    /**
+     * @Route("/racquets/submit", name="app_select2_submit", methods={"POST"})
+     */
+    public function submit(Request $request, RacquetRepository $racquetRepository): Response
+    {
+        $racquetId = $request->request->get('racquet_id');
+        
+        if ($racquetId) {
+            $racquet = $racquetRepository->find($racquetId);
+            
+            if ($racquet) {
+                return $this->render('select2/index.html.twig', [
+                    'controller_name' => 'Select2Controller',
+                    'selectedRacquet' => [
+                        'id' => $racquet->getId(),
+                    ]
+                ]);
+            }
+        }
+        
+        return $this->redirectToRoute('app_select2');
     }
 }
