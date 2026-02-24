@@ -18,7 +18,7 @@ erDiagram
     Order }o--|| PromoCode : uses
     Racquet ||--o{ RacquetRating : receives
     Racquet ||--o{ RacquetOrdered : "is ordered as"
-    
+
     User {
         int id PK
         string username UK
@@ -29,7 +29,7 @@ erDiagram
         string firstname
         string phone
     }
-    
+
     Order {
         int id PK
         int user_id FK
@@ -37,8 +37,9 @@ erDiagram
         string status
         datetime createdAt
         datetime updatedAt
+        float total
     }
-    
+
     Racquet {
         int id PK
         string brand
@@ -46,9 +47,9 @@ erDiagram
         float price
         smallint quantity
         string imgExtension
-        smallint avgRating
+        float avgRating
     }
-    
+
     RacquetOrdered {
         int id PK
         int racquet_id FK
@@ -59,14 +60,14 @@ erDiagram
         smallint grip_size
         smallint quantity
     }
-    
+
     RacquetRating {
         int id PK
         int user_id FK
         int racquet_id FK
         smallint rating
     }
-    
+
     PromoCode {
         int id PK
         string name
