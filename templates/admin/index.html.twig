@@ -16,11 +16,10 @@
 			</div>
 		</div>
 
-		<div
-			class="row">
+		<div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
 			{# Racquet Management Card #}
-			<div class="col-md-4 mb-4">
-				<div class="card shadow-sm h-100 border-primary">
+			<div class="col mb-4 d-flex">
+				<div class="card shadow-sm h-100 border-primary" style="width:100%;">
 					<div class="card-body text-center">
 						<div class="mb-3">
 							<span style="font-size: 3rem;">🎾</span>
@@ -30,18 +29,10 @@
 							Manage your racquet inventory. Add new racquets, update existing ones, or remove discontinued items.
 						</p>
 						<ul class="list-unstyled text-start mb-4">
-							<li>
-								View all racquets
-							</li>
-							<li>
-								Add new racquets
-							</li>
-							<li>
-								Edit specifications
-							</li>
-							<li>
-								Manage stock levels
-							</li>
+							<li>View all racquets</li>
+							<li>Add new racquets</li>
+							<li>Edit specifications</li>
+							<li>Manage stock levels</li>
 						</ul>
 						<a href="{{ path('app_admin_racquet_index') }}" class="btn btn-primary btn-lg w-100">
 							🛠️ Manage Racquets
@@ -51,8 +42,8 @@
 			</div>
 
 			{# Order Management Card #}
-			<div class="col-md-4 mb-4">
-				<div class="card shadow-sm h-100 border-success">
+			<div class="col mb-4 d-flex">
+				<div class="card shadow-sm h-100 border-success" style="width:100%;">
 					<div class="card-body text-center">
 						<div class="mb-3">
 							<span style="font-size: 3rem;">📦</span>
@@ -62,18 +53,10 @@
 							View and manage customer orders. Process confirmations, track shipments, and handle order status updates.
 						</p>
 						<ul class="list-unstyled text-start mb-4">
-							<li>
-								View all orders
-							</li>
-							<li>
-								Confirm pending orders
-							</li>
-							<li>
-								Track shipments
-							</li>
-							<li>
-								Update order status
-							</li>
+							<li>View all orders</li>
+							<li>Confirm pending orders</li>
+							<li>Track shipments</li>
+							<li>Update order status</li>
 						</ul>
 						<a href="{{ path('app_admin_orders_index') }}" class="btn btn-success btn-lg w-100">
 							📋 Manage Orders
@@ -83,8 +66,8 @@
 			</div>
 
 			{# User Management Card #}
-			<div class="col-md-4 mb-4">
-				<div class="card shadow-sm h-100 border-info">
+			<div class="col mb-4 d-flex">
+				<div class="card shadow-sm h-100 border-info" style="width:100%;">
 					<div class="card-body text-center">
 						<div class="mb-3">
 							<span style="font-size: 3rem;">👥</span>
@@ -94,25 +77,43 @@
 							Manage customer accounts, view user information, and handle user roles and permissions.
 						</p>
 						<ul class="list-unstyled text-start mb-4">
-							<li>
-								View all users
-							</li>
-							<li>
-								Edit user details
-							</li>
-							<li>
-								Manage roles
-							</li>
-							<li>
-								Account status
-							</li>
+							<li>View all users</li>
+							<li>Edit user details</li>
+							<li>Manage roles</li>
+							<li>Account status</li>
 						</ul>
-						<a href={{ path("app_admin_user_index") }} class="btn btn-info btn-lg w-100">
+						<a href="{{ path('app_admin_user_index') }}" class="btn btn-info btn-lg w-100">
 							👤 Manage Users
+						</a>
+					</div>
+				</div>
+			</div>
+
+			{# Promo Code Management Card #}
+			<div class="col mb-4 d-flex">
+				<div class="card shadow-sm h-100 border-warning" style="width:100%;">
+					<div class="card-body text-center d-flex flex-column">
+						<div class="mb-3">
+							<span style="font-size: 3rem;">🏷️</span>
+						</div>
+						<h3 class="card-title">Promo Code Management</h3>
+						<p class="card-text text-muted">
+							Create, edit, and manage discount promo codes for your shop.
+						</p>
+						<ul class="list-unstyled text-start mb-4">
+							<li>View all promo codes</li>
+							<li>Add new promo codes</li>
+							<li>Edit or delete codes</li>
+							<li>See code usage</li>
+						</ul>
+						<a href="{{ path('app_promo_code_index') }}" class="btn btn-warning btn-lg w-100 mt-auto">
+							🏷️ Manage Promo Codes
 						</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	
 {% endblock %}
