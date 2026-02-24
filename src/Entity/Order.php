@@ -53,6 +53,11 @@ class Order
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=PromoCode::class)
+     */
+    private $promoCode;
+
     public function __construct()
     {
         $this->racquets = new ArrayCollection();
@@ -162,6 +167,18 @@ class Order
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPromoCode(): ?PromoCode
+    {
+        return $this->promoCode;
+    }
+
+    public function setPromoCode(?PromoCode $promoCode): self
+    {
+        $this->promoCode = $promoCode;
 
         return $this;
     }
