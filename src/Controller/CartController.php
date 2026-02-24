@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use function PHPUnit\Framework\isEmpty;
+
 /**
  * @Route("/cart", name="app_cart_")
  * @IsGranted("ROLE_USER")
@@ -26,7 +28,8 @@ class CartController extends AbstractController
     public function index(
         CartManager $cartManager, 
         Request $request, 
-        PromoCodeRepository $promoCodeRepository
+        PromoCodeRepository $promoCodeRepository,
+        EntityManagerInterface $em
         ): Response
     {
         $cart = $cartManager->getCurrentCart();
@@ -56,7 +59,19 @@ class CartController extends AbstractController
         if ($formCart->isSubmitted() && $formCart->isValid()){
             $cart->setUpdatedAt(new \DateTime())
                 ->setUser($this->getUser());
-            
+
+            // Handle remove button
+            foreach ($formCart->get('racquets') as $key => $racquetForm) {
+                if ($racquetForm->get('remove')->isClicked()) {
+                    $racquetOrdered = $cart->getRacquets()[$key];
+                    $cart->removeRacquet($racquetOrdered);
+                    if (isEmpty($cart->getRacquets())){
+                        $em->remove($racquetOrdered);
+                        $em->remove($cart);
+                    }
+                }
+            }
+
             // Recalculate discount if promo code is applied
             if ($cart->getPromoCode()) {
                 $cartManager->handlePromoCode($cart->getPromoCode(), $cart);
