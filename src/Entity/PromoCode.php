@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\PromoCodeRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,6 +24,7 @@ class PromoCode
 
     /**
      * @ORM\Column(type="smallint")
+     * @Assert\Range(min=0, max=100)
      */
     private $discount;
 

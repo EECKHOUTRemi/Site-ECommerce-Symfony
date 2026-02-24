@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -55,8 +55,15 @@ class Order
 
     /**
      * @ORM\ManyToOne(targetEntity=PromoCode::class)
+     * @Assert\Range(min=0, max=100)
      */
     private $promoCode;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Assert\Range(min=0)
+     */
+    private $total;
 
     public function __construct()
     {
@@ -150,19 +157,11 @@ class Order
         return $this;
     }
 
-    public function getTotal(): float
-    {
-        $total = 0;
-        foreach ($this->getRacquets() as $racquet) {
-            $total += $racquet->getTotal();
-        }
-        return $total;
-    }
-
+    
     public function getUser(): ?User
     {
         return $this->user;
-    }
+        }
 
     public function setUser(?User $user): self
     {
@@ -180,6 +179,35 @@ class Order
     {
         $this->promoCode = $promoCode;
 
+        return $this;
+    }
+
+    public function getTotal(): float
+    {
+        return $this->total;
+    }
+
+    public function getTotalWithoutDiscount(): float
+    {
+        $total = 0;
+        foreach ($this->getRacquets() as $racquet) {
+            $total += $racquet->getTotal();
+        }
+
+        return $total;
+    }
+
+    public function setTotal(?float $total = null): self
+    {
+        if ($total === null) {
+            $total = 0;
+            foreach ($this->getRacquets() as $racquet) {
+                $total += $racquet->getTotal();
+            }
+        }
+                
+        $this->total = $total;
+        
         return $this;
     }
 }
