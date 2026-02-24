@@ -4,9 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Racquet;
 use App\Entity\RacquetRating;
+use App\Entity\User;
 use App\Form\Cart\AddToCartType;
-use App\Form\RacquetRatingType;
 use App\Form\Filter\FilterType;
+use App\Form\RacquetRatingType;
 use App\Manager\CartManager;
 use App\Model\FilterData;
 use App\Repository\RacquetRatingRepository;
@@ -118,7 +119,7 @@ class RacquetController extends AbstractController
 
         if ($ratingForm->isSubmitted() && $ratingForm->isValid()) {
 
-            /** @var \App\Entity\User $user */
+            /** @var User $user */
             $user = $this->getUser();
             $submittedRating = $ratingForm->getData()['rating'];
             
@@ -150,7 +151,7 @@ class RacquetController extends AbstractController
     }
 
     /**
-     * @Route("/racquets/data", name="racquet_data")
+     * @Route("/racquets/data", name="racquets_data")
      */
     public function data(Request $request, RacquetRepository $racquetRepository){
         $searchTerm = $request->query->get('q', '');
@@ -159,7 +160,7 @@ class RacquetController extends AbstractController
     }
 
     /**
-     * @Route("/racquets/submit", name="app_select2_submit", methods={"POST"})
+     * @Route("/racquets/submit", name="racquet_submit", methods={"POST"})
      */
     public function submit(Request $request, RacquetRepository $racquetRepository): Response
     {

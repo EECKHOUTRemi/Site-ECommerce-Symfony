@@ -26,8 +26,7 @@ class CartController extends AbstractController
     public function index(
         CartManager $cartManager, 
         Request $request, 
-        PromoCodeRepository $promoCodeRepository,
-        EntityManagerInterface $em
+        PromoCodeRepository $promoCodeRepository
         ): Response
     {
         $cart = $cartManager->getCurrentCart();
