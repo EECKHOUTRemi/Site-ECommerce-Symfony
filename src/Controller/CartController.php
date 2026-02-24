@@ -43,7 +43,7 @@ class CartController extends AbstractController
         }
         
         if ($formPromo->isSubmitted() && $formPromo->isValid()){
-            $promoCode = $formPromo->get('name')->getData();
+            $promoCode = strtoupper(str_replace(" ", "_", $formPromo->get('name')->getData()));
             if ($promoCodeRepository->findOneBy(['name' => $promoCode])) {
                 $promo = $promoCodeRepository->findOneBy(['name' => $promoCode]);
                 $cartManager->handlePromoCode($promo, $cart);

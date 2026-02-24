@@ -37,6 +37,7 @@ class AdminPromoCodeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $promoCode->setName(strtoupper(str_replace(" ", "_", $promoCode->getName())));
             $promoCodeRepository->add($promoCode, true);
 
             return $this->redirectToRoute('app_promo_code_index', [], Response::HTTP_SEE_OTHER);
