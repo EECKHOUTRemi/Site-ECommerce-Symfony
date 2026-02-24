@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PromoCode index
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<div class="card shadow-sm">
+			<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+				<h1 class="h3 mb-0">🎟️ Promo Code Management</h1>
+				<a href="{{ path('app_promo_code_new') }}" class="btn btn-success">
+					➕ Create New
+				</a>
+			</div>
+			<div class="card-body p-0">
+				<div class="table-responsive">
+					<table id="promo_codes" class="table table-hover table-striped mb-0">
+						<thead class="table-light">
+							<tr>
+								<th>Id</th>
+								<th>Code</th>
+								<th>Discount</th>
+								<th class="text-center">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for promo_code in promo_codes %}
+								<tr>
+									<td>{{ promo_code.id }}</td>
+									<td>
+										<strong>{{ promo_code.name }}</strong>
+									</td>
+									<td>
+										<span class="badge bg-success">{{ promo_code.discount }}%</span>
+									</td>
+									<td class="text-center">
+										<div class="btn-group btn-group-sm" role="group">
+											<a href="{{ path('app_promo_code_show', {'id': promo_code.id}) }}" class="btn btn-outline-primary">👁️ Show
+											</a>
+											<a href="{{ path('app_promo_code_edit', {'id': promo_code.id}) }}" class="btn btn-outline-warning">✏️ Edit
+											</a>
+										</div>
+									</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="4" class="text-center text-muted py-4">
+										<p class="mb-0 mt-2">No records found</p>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script src="{{ asset('js/datatable.js') }}"></script>
+{% endblock %}
