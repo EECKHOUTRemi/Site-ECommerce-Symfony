@@ -10,7 +10,8 @@ Remake of [Site-ECommerce](https://github.com/EECKHOUTRemi/Site-ECommerce) with 
 
 ## Database Schema
 
-```mermaiderDiagram
+```mermaid
+erDiagram
     User ||--o{ Order : places
     User ||--o{ RacquetRating : rates
     Order ||--o{ RacquetOrdered : contains
