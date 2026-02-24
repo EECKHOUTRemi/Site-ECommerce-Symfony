@@ -110,7 +110,7 @@ class RacquetController extends AbstractController
 
             $cartManager->save($cart);
 
-            return $this->redirectToRoute('racquet_detail', ['id' => $racquet->getId()]);
+            return $this->redirectToRoute('app_cart_index');
         }
         
         // Rating form
