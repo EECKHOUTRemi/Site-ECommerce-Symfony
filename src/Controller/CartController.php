@@ -24,7 +24,12 @@ class CartController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(CartManager $cartManager, Request $request, PromoCodeRepository $promoCodeRepository): Response
+    public function index(
+        CartManager $cartManager, 
+        Request $request, 
+        PromoCodeRepository $promoCodeRepository,
+        EntityManagerInterface $em
+        ): Response
     {
         $cart = $cartManager->getCurrentCart();
 
@@ -62,6 +67,22 @@ class CartController extends AbstractController
             'formCart' => $formCart->createView(),
             'formPromo' => $formPromo->createView()
         ]);
+    }
+
+    /**
+     * @Route("/clear", name="clear", methods={"POST"})
+     */
+    public function clear(CartManager $cartManager, EntityManagerInterface $em): Response
+    {
+        $cart = $cartManager->getCurrentCart();
+        
+        // Delete the entire cart from database
+        $em->remove($cart);
+        $em->flush();
+        
+        $this->addFlash('success', 'Your cart has been cleared.');
+        
+        return $this->redirectToRoute('app_cart_index');
     }
 
     /**
