@@ -56,7 +56,6 @@ class Order
 
     /**
      * @ORM\ManyToOne(targetEntity=PromoCode::class)
-     * @Assert\Range(min=0, max=100)
      */
     private $promoCode;
 

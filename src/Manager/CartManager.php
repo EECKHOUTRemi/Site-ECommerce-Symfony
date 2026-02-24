@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Order;
+use App\Entity\PromoCode;
 use App\Factory\OrderFactory;
 use App\Repository\PromoCodeRepository;
 use App\Service\CartSessionStorage;
@@ -74,12 +75,11 @@ class CartManager{
         }
     }
 
-    public function handlePromoCode(string $promoCode, Order $cart){
-        $result = $this->promoCodeRepository->findOneBy(['name' => $promoCode]);
-        $discount = $result->getDiscount();
+    public function handlePromoCode(PromoCode $promo, Order $cart){
+        $discount = $promo->getDiscount();
         $currentTotal = $cart->getTotalWithoutDiscount();
         $newTotal = $currentTotal - $currentTotal * ($discount / 100);
-        $cart->setPromoCode($result);
+        $cart->setPromoCode($promo);
         $cart->setTotal($newTotal);
         $this->save($cart);
     }

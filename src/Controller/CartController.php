@@ -7,7 +7,6 @@ use App\Form\Cart\CartPromoCodeType;
 use App\Form\Cart\CartType;
 use App\Manager\CartManager;
 use App\Repository\PromoCodeRepository;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,13 +39,14 @@ class CartController extends AbstractController
         $formPromo->handleRequest($request);
 
         if ($cart->getPromoCode() && ($cart->getTotalWithoutDiscount() - $cart->getTotal()) == 0) {
-            $cartManager->handlePromoCode($cart->getPromoCode()->getName(), $cart);
+            $cartManager->handlePromoCode($cart->getPromoCode(), $cart);
         }
         
         if ($formPromo->isSubmitted() && $formPromo->isValid()){
             $promoCode = $formPromo->get('name')->getData();
             if ($promoCodeRepository->findOneBy(['name' => $promoCode])) {
-                $cartManager->handlePromoCode($promoCode, $cart);
+                $promo = $promoCodeRepository->findOneBy(['name' => $promoCode]);
+                $cartManager->handlePromoCode($promo, $cart);
             } else {
                 $this->addFlash('error', 'Wrong code. Please enter a valid code.');
             }
@@ -55,9 +55,16 @@ class CartController extends AbstractController
         }
 
         if ($formCart->isSubmitted() && $formCart->isValid()){
-            $cart->setUpdatedAt(new \DateTime());
-            $cart->setUser($this->getUser());
-            $cartManager->save($cart);
+            $cart->setUpdatedAt(new \DateTime())
+                ->setUser($this->getUser());
+            
+            // Recalculate discount if promo code is applied
+            if ($cart->getPromoCode()) {
+                $cartManager->handlePromoCode($cart->getPromoCode(), $cart);
+            } else {
+                $cart->setTotal();
+                $cartManager->save($cart);
+            }
 
             return $this->redirectToRoute('app_cart_index');
         }

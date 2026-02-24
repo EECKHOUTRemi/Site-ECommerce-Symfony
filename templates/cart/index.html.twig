@@ -148,6 +148,22 @@
                     }
                 });
             }
+
+            const quantityInputs = document.querySelectorAll('input[type="number"][id*="quantity"]');
+            let timeoutId;
+            
+            quantityInputs.forEach(function(input) {
+                input.addEventListener('change', function() {
+                    clearTimeout(timeoutId);
+                    
+                    // Only submit if the value is valid
+                    if (input.value && parseInt(input.value) > 0) {
+                        timeoutId = setTimeout(function() {
+                            input.closest('form').submit();
+                        }, 500);
+                    }
+                });
+            });
         });
     </script>
 {% endblock %}
