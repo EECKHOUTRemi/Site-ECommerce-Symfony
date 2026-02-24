@@ -33,10 +33,18 @@ class CartController extends AbstractController
 
         $formPromo = $this->createForm(CartPromoCodeType::class);
         $formPromo->handleRequest($request);
+
+        if ($cart->getPromoCode() && ($cart->getTotalWithoutDiscount() - $cart->getTotal()) == 0) {
+            $cartManager->handlePromoCode($cart->getPromoCode()->getName(), $cart);
+        }
         
         if ($formPromo->isSubmitted() && $formPromo->isValid()){
             $promoCode = $formPromo->get('name')->getData();
-            $cartManager->handlePromoCode($promoCode, $cart);
+            if ($promoCodeRepository->findOneBy(['name' => $promoCode])) {
+                $cartManager->handlePromoCode($promoCode, $cart);
+            } else {
+                $this->addFlash('error', 'Wrong code. Please enter a valid code.');
+            }
 
             return $this->redirectToRoute('app_cart_index');
         }
