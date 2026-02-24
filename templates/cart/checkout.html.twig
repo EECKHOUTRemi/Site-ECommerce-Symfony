@@ -76,6 +76,30 @@
 										</span>
 									</li>
 								{% endfor %}
+								{% if order.promoCode %}
+									<li class="list-group-item">
+										<div class="d-flex justify-content-between">
+											<span>Subtotal:</span>
+											<span>{{ order.totalWithoutDiscount|number_format(2, '.', ',') }} €</span>
+										</div>
+									</li>
+									<li class="list-group-item bg-success bg-opacity-10">
+										<div class="d-flex justify-content-between text-success">
+											<span>
+												<strong>🎟️ Discount ({{ order.promoCode.name }} - {{ order.promoCode.discount }}%):</strong>
+											</span>
+											<span>
+												<strong>-{{ (order.totalWithoutDiscount - order.total)|number_format(2, '.', ',') }} €</strong>
+											</span>
+										</div>
+									</li>
+								{% endif %}
+								<li class="list-group-item bg-light">
+									<div class="d-flex justify-content-between">
+										<strong>Total:</strong>
+										<strong class="text-primary fs-5">{{ order.total|number_format(2, '.', ',') }} €</strong>
+									</div>
+								</li>
 							</ul>
 						</div>
 

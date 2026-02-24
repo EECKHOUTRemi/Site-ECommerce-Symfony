@@ -113,6 +113,19 @@
 										</td>
 									</tr>
 									<tr>
+										<th>Promo Code:</th>
+										<td>
+											{% if order.promoCode %}
+												<span class="badge bg-success text-white">
+													{{ order.promoCode.name }}
+													(-{{ order.promoCode.discount }}%)
+												</span>
+											{% else %}
+												<span class="text-muted">None</span>
+											{% endif %}
+										</td>
+									</tr>
+									<tr>
 										<th>Total Amount:</th>
 										<td>
 											<strong class="text-primary" style="font-size: 1.2rem;">
@@ -183,6 +196,11 @@
 									<tr>
 										<td colspan="3" class="text-end">
 											<strong>Total:</strong>
+											{% if order.promoCode %}
+												<span class="text-success ms-2">
+													({{ order.promoCode.name }}: -{{ order.promoCode.discount }}% = -{{ (order.totalWithoutDiscount - order.total)|number_format(2, '.', ',') }} €)
+												</span>
+											{% endif %}
 										</td>
 										<td class="text-end">
 											<strong class="text-primary" style="font-size: 1.2rem;">
