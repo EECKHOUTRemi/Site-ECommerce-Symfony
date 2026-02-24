@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Order;
 use App\Factory\OrderFactory;
+use App\Repository\PromoCodeRepository;
 use App\Service\CartSessionStorage;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -24,14 +25,21 @@ class CartManager{
      */
     private $em;
 
+    /**
+     * @var PromoCodeRepository
+     */
+    private $promoCodeRepository;
+
     public function __construct(
         CartSessionStorage $cartStorage,
         OrderFactory $orderFactory,
-        EntityManagerInterface $entityManagerInterface
+        EntityManagerInterface $entityManagerInterface,
+        PromoCodeRepository $promoCodeRepository
     ) {
         $this->cartSessionStorage = $cartStorage;
         $this->cartFactory = $orderFactory;
         $this->em = $entityManagerInterface;
+        $this->promoCodeRepository = $promoCodeRepository;
     }
     
     public function getCurrentCart(): Order{
@@ -64,5 +72,15 @@ class CartManager{
         if ($status === Order::STATUS_PENDING){
             $this->cartSessionStorage->clearCart();
         }
+    }
+
+    public function handlePromoCode(string $promoCode, Order $cart){
+        $result = $this->promoCodeRepository->findOneBy(['name' => $promoCode]);
+        $discount = $result->getDiscount();
+        $currentTotal = $cart->getTotalWithoutDiscount();
+        $newTotal = $currentTotal - $currentTotal * ($discount / 100);
+        $cart->setPromoCode($result);
+        $cart->setTotal($newTotal);
+        $this->save($cart);
     }
 }

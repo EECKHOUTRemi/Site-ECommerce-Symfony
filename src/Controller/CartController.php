@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Order;
+use App\Form\Cart\CartPromoCodeType;
 use App\Form\Cart\CartType;
 use App\Manager\CartManager;
+use App\Repository\PromoCodeRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -22,14 +24,24 @@ class CartController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(CartManager $cartManager, Request $request): Response
+    public function index(CartManager $cartManager, Request $request, PromoCodeRepository $promoCodeRepository): Response
     {
         $cart = $cartManager->getCurrentCart();
 
-        $form = $this->createForm(CartType::class, $cart);
-        $form->handleRequest($request);
+        $formCart = $this->createForm(CartType::class, $cart);
+        $formCart->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        $formPromo = $this->createForm(CartPromoCodeType::class);
+        $formPromo->handleRequest($request);
+        
+        if ($formPromo->isSubmitted() && $formPromo->isValid()){
+            $promoCode = $formPromo->get('name')->getData();
+            $cartManager->handlePromoCode($promoCode, $cart);
+
+            return $this->redirectToRoute('app_cart_index');
+        }
+
+        if ($formCart->isSubmitted() && $formCart->isValid()){
             $cart->setUpdatedAt(new \DateTime());
             $cart->setUser($this->getUser());
             $cartManager->save($cart);
@@ -39,7 +51,8 @@ class CartController extends AbstractController
 
         return $this->render('cart/index.html.twig', [
             'cart' => $cart,
-            'form' => $form->createView()
+            'formCart' => $formCart->createView(),
+            'formPromo' => $formPromo->createView()
         ]);
     }
 

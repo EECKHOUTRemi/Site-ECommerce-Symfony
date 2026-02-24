@@ -100,9 +100,12 @@ class RacquetController extends AbstractController
             $data->setRacquet($racquet);
 
             $cart = $cartManager->getCurrentCart();
+            
             $cart->addRacquet($data)
                 ->setUpdatedAt(new \DateTime())
-                ->setUser($this->getUser());
+                ->setUser($this->getUser())
+                ->setTotal();
+            ;
 
             $cartManager->save($cart);
 
